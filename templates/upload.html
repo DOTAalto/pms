@@ -10,16 +10,18 @@
 <body>
     <h1>Submit your demo</h1>
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <input type="text" name="artwork_name" placeholder="Artwork Name">
-        <input type="text" name="author" placeholder="Author">
-        <input type="text" name="description" placeholder="Description">
-        <select name="platform">
+        <label for="platform">Platform</label>
+        <select name="platform" id="platform">
             <option value="TIC-80">TIC-80</option>
             <option value="PICO-8">PICO-8</option>
             <option value="WASM-4">WASM-4</option>
             <option value="UXN+Varvara">UXN+Varvara</option>
         </select>
+        <input type="file" name="file">
+        <p>All of these are shown on the big screen before and after your demo is shown.</p>
+        <input type="text" name="artwork_name" placeholder="Title">
+        <input type="text" name="author" placeholder="Author">
+        <input type="text" name="description" placeholder="Description or message">
         <input type="submit" value="Upload">
     </form>
     <script>

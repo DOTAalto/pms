@@ -49,6 +49,10 @@ input[type="submit"] {
     box-shadow: none;
 }
 
+label {
+    margin-bottom: 0.3em;
+}
+
 /* dark mod using system theme */
 @media (prefers-color-scheme: dark) {
     :root {
