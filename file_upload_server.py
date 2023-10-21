@@ -28,7 +28,8 @@ def upload_file():
         else:
             # New submission
             app.config['COUNTER'] += 1
-            path = os.path.join(app.config['UPLOAD_FOLDER'], str(app.config['COUNTER']))
+            path = os.path.join(
+                app.config['UPLOAD_FOLDER'], str(app.config['COUNTER']))
             os.makedirs(path)
 
         file = request.files.get('file')
