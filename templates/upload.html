@@ -3,21 +3,34 @@
 <head>
     <title>File Upload</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            padding: 2em;
+            width: 50%;
+        }
+        form {
+            display: flex;
+            flex-flow: column;
+        }
+        input[type="text"], input[type="file"] {
+            margin-bottom: 1em;
+            padding: .5em;
+        }
+        input[type="submit"] {
+            margin-top: 1em;
+            padding: .5em;
+        }
+    </style>
 </head>
 <body>
     <form method="POST" enctype="multipart/form-data">
-        <p>
-            <input type="file" name="file" />
-        </p>
-        <p>
-            <input type="text" name="author" placeholder="Author">
-        </p>
-        <p>
-            <input type="text" name="description" placeholder="Description">
-        </p>
-        <p>
-            <input type="submit" value="Upload">
-        </p>
+        <input type="file" name="file">
+        <input type="text" name="name" placeholder="Name">
+        <input type="text" name="author" placeholder="Author">
+        <input type="text" name="description" placeholder="Description">
+        <input type="submit" value="Upload">
     </form>
 </body>
 </html>
