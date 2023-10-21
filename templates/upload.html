@@ -10,6 +10,11 @@
             padding: 2em;
             width: 50%;
         }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 1em;
+        }
         form {
             display: flex;
             flex-flow: column;
@@ -17,17 +22,24 @@
         input[type="text"], input[type="file"] {
             margin-bottom: 1em;
             padding: .5em;
+            border-radius: 5px;
+            font-size: 1.2em;
         }
         input[type="submit"] {
             margin-top: 1em;
             padding: .5em;
+            border-radius: 5px;
+            font-size: 1.2em;
+            background: #008CBA; /* Blue background */
+            color: white; /* White text color */
         }
     </style>
 </head>
 <body>
+    <h1>Upload Artwork</h1>
     <form method="POST" enctype="multipart/form-data">
         <input type="file" name="file">
-        <input type="text" name="name" placeholder="Name">
+        <input type="text" name="artwork_name" placeholder="Artwork Name">
         <input type="text" name="author" placeholder="Author">
         <input type="text" name="description" placeholder="Description">
         <input type="submit" value="Upload">

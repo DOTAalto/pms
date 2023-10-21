@@ -16,14 +16,14 @@ def upload_file():
             os.makedirs(path)
 
         file = request.files['file']
-        name = request.form.get('name')
+        artwork_name = request.form.get('artwork_name')  # Updated here
         author = request.form.get('author')
         description = request.form.get('description')
 
         file.save(os.path.join(path, file.filename))
-
+        
         with open(os.path.join(path, "info.txt"), "w") as info:
-            info.write(f"Name: {name}\nAuthor: {author}\nDescription: {description}")
+            info.write(f"Artwork Name: {artwork_name}\nAuthor: {author}\nDescription: {description}")  # And here
 
         return 'File upload successfully!'
     return render_template('upload.html')
