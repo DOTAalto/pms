@@ -22,6 +22,20 @@
         </select>
         <input type="submit" value="Upload">
     </form>
+    <script>
+        const uploadForm = document.querySelector('form');
+
+        uploadForm.addEventListener('keypress', event => {
+            // prevent uploading the form if pressing enter on input
+            if (event.key === 'Enter') {
+                event.preventDefault();
+
+                // but input the enter to the text field
+                event.target.value += '\n\r';
+            }
+        });
+    </script>
+
 </body>
 
 </html>
