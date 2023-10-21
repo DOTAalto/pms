@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0 auto;
+    padding: 2em;
+    width: 50%;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 1em;
+}
+
+form {
+    display: flex;
+    flex-flow: column;
+}
+
+input[type="text"],
+input[type="file"],
+select {
+    margin-bottom: 1em;
+    padding: .5em;
+    border-radius: 5px;
+    font-size: 1.2em;
+    border: 1px solid hsl(0, 0%, 80%);
+    box-shadow: none;
+}
+
+input[type="submit"] {
+    margin-top: 1em;
+    padding: .5em;
+    border-radius: 5px;
+    font-size: 1.2em;
+    border: 1px solid hsl(210, 100%, 50%);
+    background: hsl(195, 100%, 50%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: none;
+}
