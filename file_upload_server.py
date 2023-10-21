@@ -32,7 +32,7 @@ def upload_file():
         }
 
         with open(os.path.join(path, "info.json"), "w") as outfile:
-            json.dump(info, outfile)
+            json.dump(info, outfile, indent=4)
 
         return render_template('result.html')
     return render_template('upload.html')
