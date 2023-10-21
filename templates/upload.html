@@ -19,7 +19,7 @@
             display: flex;
             flex-flow: column;
         }
-        input[type="text"], input[type="file"] {
+        input[type="text"], input[type="file"], select {
             margin-bottom: 1em;
             padding: .5em;
             border-radius: 5px;
@@ -32,7 +32,7 @@
             padding: .5em;
             border-radius: 5px;
             font-size: 1.2em;
-            border: 1px solid hsl(210, 100%, 50%); /* Darker border color */
+            border: 1px solid hsl(210, 100%, 50%);
             background: hsl(195, 100%, 50%);
             color: hsl(0, 0%, 100%);
             box-shadow: none;
@@ -46,6 +46,12 @@
         <input type="text" name="artwork_name" placeholder="Artwork Name">
         <input type="text" name="author" placeholder="Author">
         <input type="text" name="description" placeholder="Description">
+        <select name="platform">
+            <option value="TIC-80">TIC-80</option>
+            <option value="PICO-8">PICO-8</option>
+            <option value="WASM-4">WASM-4</option>
+            <option value="UXN+Varvara">UXN+Varvara</option>
+        </select>
         <input type="submit" value="Upload">
     </form>
 </body>
