@@ -9,19 +9,25 @@
 
 <body>
     <h1>Submit your demo</h1>
+
+    {% if file_uploaded %}
+    <h2>File upload successful!</h2>
+    {% endif %}
     <form method="POST" enctype="multipart/form-data">
         <label for="platform">Platform</label>
-        <select name="platform" id="platform">
-            <option value="TIC-80">TIC-80</option>
-            <option value="PICO-8">PICO-8</option>
-            <option value="WASM-4">WASM-4</option>
-            <option value="UXN+Varvara">UXN+Varvara</option>
+        <select name="platform">
+            {% set platforms = ["TIC-80", "PICO-8", "WASM-4", "UXN+Varvara"] %}
+            {% for platform in platforms %}
+            <option value="{{ platform }}" {% if form_initial.platform==platform %}selected{% endif %}>{{ platform }}
+            </option>
+            {% endfor %}
         </select>
         <input type="file" name="file">
         <p>All of these are shown on the big screen before and after your demo is shown.</p>
-        <input type="text" name="artwork_name" placeholder="Title">
-        <input type="text" name="author" placeholder="Author">
-        <input type="text" name="description" placeholder="Description or message">
+        <input type="text" name="artwork_name" placeholder="Title" value="{{ form_initial.title }}">
+        <input type="text" name="author" placeholder="Author" value="{{ form_initial.author }}">
+        <input type="text" name="description" placeholder="Description or message"
+            value="{{ form_initial.description }}">
         <input type="submit" value="Upload">
     </form>
     <script>
