@@ -16,11 +16,11 @@
     <form method="POST" enctype="multipart/form-data">
         <label for="platform">Platform</label>
         <select name="platform">
-            <option value="TIC-80" {% if form_initial.platform=='TIC-80' %}selected{% endif %}>TIC-80</option>
-            <option value="PICO-8" {% if form_initial.platform=='PICO-8' %}selected{% endif %}>PICO-8</option>
-            <option value="WASM-4" {% if form_initial.platform=='WASM-4' %}selected{% endif %}>WASM-4</option>
-            <option value="UXN+Varvara" {% if form_initial.platform=='UXN+Varvara' %}selected{% endif %}>UXN+Varvara
+            {% set platforms = ["TIC-80", "PICO-8", "WASM-4", "UXN+Varvara"] %}
+            {% for platform in platforms %}
+            <option value="{{ platform }}" {% if form_initial.platform==platform %}selected{% endif %}>{{ platform }}
             </option>
+            {% endfor %}
         </select>
         <input type="file" name="file">
         <p>All of these are shown on the big screen before and after your demo is shown.</p>
