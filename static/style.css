@@ -1,8 +1,17 @@
+:root {
+    --fg: hsl(0, 0%, 10%);
+    --bg: hsl(0, 0%, 100%);
+    --button-bg: hsl(195, 100%, 50%);
+    --button-border: 1px solid hsl(210, 100%, 50%);
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0 auto;
     padding: 2em;
     width: 50%;
+    background: var(--bg);
+    color: var(--fg);
 }
 
 h1 {
@@ -25,6 +34,8 @@ select {
     font-size: 1.2em;
     border: 1px solid hsl(0, 0%, 80%);
     box-shadow: none;
+    background: var(--bg);
+    color: var(--fg);
 }
 
 input[type="submit"] {
@@ -32,8 +43,18 @@ input[type="submit"] {
     padding: .5em;
     border-radius: 5px;
     font-size: 1.2em;
-    border: 1px solid hsl(210, 100%, 50%);
-    background: hsl(195, 100%, 50%);
+    border: 1px solid var(--button-border);
+    background: var(--button-bg);
     color: hsl(0, 0%, 100%);
     box-shadow: none;
+}
+
+/* dark mod using system theme */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: hsl(210, 50%, 5%);
+        --fg: hsl(0, 0%, 90%);
+        --button-bg: hsl(210, 100%, 50%);
+        --button-border: hsl(210, 100%, 75%);
+    }
 }
