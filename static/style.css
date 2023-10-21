@@ -61,4 +61,8 @@ label {
         --button-bg: hsl(210, 100%, 50%);
         --button-border: hsl(210, 100%, 75%);
     }
+
+    * {
+        color-scheme: dark;
+    }
 }
