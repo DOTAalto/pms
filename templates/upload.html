@@ -14,16 +14,20 @@
     <h2>File upload successful!</h2>
     {% endif %}
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <input type="text" name="artwork_name" placeholder="Artwork Name" value="{{ form_initial.title }}">
-        <input type="text" name="author" placeholder="Author" value="{{ form_initial.author }}">
-        <input type="text" name="description" placeholder="Description" value="{{ form_initial.description }}">
+        <label for="platform">Platform</label>
         <select name="platform">
-            <option value="TIC-80" {% if form_initial.platform == 'TIC-80' %}selected{% endif %}>TIC-80</option>
-            <option value="PICO-8"{% if form_initial.platform == 'PICO-8' %}selected{% endif %}>PICO-8</option>
-            <option value="WASM-4"{% if form_initial.platform == 'WASM-4' %}selected{% endif %}>WASM-4</option>
-            <option value="UXN+Varvara"{% if form_initial.platform == 'UXN+Varvara' %}selected{% endif %}>UXN+Varvara</option>
+            <option value="TIC-80" {% if form_initial.platform=='TIC-80' %}selected{% endif %}>TIC-80</option>
+            <option value="PICO-8" {% if form_initial.platform=='PICO-8' %}selected{% endif %}>PICO-8</option>
+            <option value="WASM-4" {% if form_initial.platform=='WASM-4' %}selected{% endif %}>WASM-4</option>
+            <option value="UXN+Varvara" {% if form_initial.platform=='UXN+Varvara' %}selected{% endif %}>UXN+Varvara
+            </option>
         </select>
+        <input type="file" name="file">
+        <p>All of these are shown on the big screen before and after your demo is shown.</p>
+        <input type="text" name="artwork_name" placeholder="Title" value="{{ form_initial.title }}">
+        <input type="text" name="author" placeholder="Author" value="{{ form_initial.author }}">
+        <input type="text" name="description" placeholder="Description or message"
+            value="{{ form_initial.description }}">
         <input type="submit" value="Upload">
     </form>
     <script>

@@ -1,7 +1,10 @@
-from flask import Flask, request, render_template, make_response
 import os
 import glob
 import json
+import zipfile
+from tempfile import TemporaryDirectory
+
+from flask import Flask, request, render_template, make_response, send_file
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './uploads'
@@ -27,7 +30,8 @@ def upload_file():
     else:
         # New submission
         app.config['COUNTER'] += 1
-        path = os.path.join(app.config['UPLOAD_FOLDER'], str(app.config['COUNTER']))
+        path = os.path.join(
+            app.config['UPLOAD_FOLDER'], str(app.config['COUNTER']))
         os.makedirs(path)
 
     file = request.files.get('file')
@@ -49,7 +53,8 @@ def upload_file():
     with open(os.path.join(path, "info.json"), "w") as outfile:
         json.dump(info, outfile, indent=4)
 
-    resp = make_response(render_template('upload.html', form_initial=info, file_uploaded=True))
+    resp = make_response(render_template(
+        'upload.html', form_initial=info, file_uploaded=True))
     resp.set_cookie('submission_id', str(app.config['COUNTER']))
     return resp
 
@@ -64,6 +69,32 @@ def get_form():
             info = json.load(json_file)
             form_initial = info
     return render_template('upload.html', form_initial=form_initial)
+
+
+@app.route('/download', methods=['GET'])
+def download_files():
+    # Create a temporary directory using tempfile
+    with TemporaryDirectory() as tempdir:
+        zipfile_path = os.path.join(tempdir, 'uploads.zip')
+        # Create a new ZipFile object
+        zip_file = zipfile.ZipFile(zipfile_path, 'w', zipfile.ZIP_DEFLATED)
+
+        # Iterate over each file in the directory
+        # os.walk is recursive, so subfolders can be ignored
+        for folder_name, subfolders, file_names in os.walk(app.config['UPLOAD_FOLDER']):
+            for file_name in file_names:
+                # Create a complete filepath
+                file_path = os.path.join(folder_name, file_name)
+
+                # Add file to the zip
+                zip_file.write(file_path)
+
+        # Close the Zip File
+        zip_file.close()
+
+        response = send_file(zipfile_path, as_attachment=True)
+        os.remove(zipfile_path)
+        return response
 
 
 if __name__ == '__main__':
