@@ -1,11 +1,11 @@
 from flask import Flask, request, render_template
 import os
+import glob
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './uploads'
-app.config['COUNTER'] = 0 # initial counter
-if not os.path.exists(app.config['UPLOAD_FOLDER']):
-    os.makedirs(app.config['UPLOAD_FOLDER'])
+directories = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*'))
+app.config['COUNTER'] = max(int(os.path.basename(d)) for d in directories)
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -16,16 +16,16 @@ def upload_file():
             os.makedirs(path)
 
         file = request.files['file']
-        artwork_name = request.form.get('artwork_name')  # Updated here
+        artwork_name = request.form.get('artwork_name')
         author = request.form.get('author')
         description = request.form.get('description')
 
         file.save(os.path.join(path, file.filename))
-        
-        with open(os.path.join(path, "info.txt"), "w") as info:
-            info.write(f"Artwork Name: {artwork_name}\nAuthor: {author}\nDescription: {description}")  # And here
 
-        return 'File upload successfully!'
+        with open(os.path.join(path, "info.txt"), "w") as info:
+            info.write(f"Artwork Name: {artwork_name}\nAuthor: {author}\nDescription: {description}")
+
+        return render_template('result.html')
     return render_template('upload.html')
 
 if __name__ == '__main__':

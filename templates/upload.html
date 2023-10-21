@@ -24,19 +24,23 @@
             padding: .5em;
             border-radius: 5px;
             font-size: 1.2em;
+            border: 1px solid hsl(0, 0%, 80%);
+            box-shadow: none;
         }
         input[type="submit"] {
             margin-top: 1em;
             padding: .5em;
             border-radius: 5px;
             font-size: 1.2em;
-            background: #008CBA; /* Blue background */
-            color: white; /* White text color */
+            border: 1px solid hsl(210, 100%, 50%); /* Darker border color */
+            background: hsl(195, 100%, 50%);
+            color: hsl(0, 0%, 100%);
+            box-shadow: none;
         }
     </style>
 </head>
 <body>
-    <h1>Upload Artwork</h1>
+    <h1>Submit your demo</h1>
     <form method="POST" enctype="multipart/form-data">
         <input type="file" name="file">
         <input type="text" name="artwork_name" placeholder="Artwork Name">
