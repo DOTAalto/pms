@@ -9,6 +9,10 @@
 
 <body>
     <h1>Submit your demo</h1>
+
+    {% if file_uploaded %}
+    <h2>File upload successful!</h2>
+    {% endif %}
     <form method="POST" enctype="multipart/form-data">
         <input type="file" name="file">
         <input type="text" name="artwork_name" placeholder="Artwork Name" value="{{ form_initial.title }}">

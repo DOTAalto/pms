@@ -49,7 +49,7 @@ def upload_file():
     with open(os.path.join(path, "info.json"), "w") as outfile:
         json.dump(info, outfile, indent=4)
 
-    resp = make_response(render_template('result.html'))
+    resp = make_response(render_template('upload.html', form_initial=info, file_uploaded=True))
     resp.set_cookie('submission_id', str(app.config['COUNTER']))
     return resp
 
