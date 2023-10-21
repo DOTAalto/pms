@@ -3,6 +3,7 @@
     --bg: hsl(0, 0%, 100%);
     --button-bg: hsl(195, 100%, 50%);
     --button-border: 1px solid hsl(210, 100%, 50%);
+    --success-color: hsl(130, 100%, 35%);
 }
 
 body {
@@ -18,6 +19,10 @@ h1 {
     text-align: center;
     font-size: 2em;
     margin-bottom: 1em;
+}
+
+.success {
+    color: var(--success-color);
 }
 
 form {
@@ -60,6 +65,7 @@ label {
         --fg: hsl(0, 0%, 90%);
         --button-bg: hsl(210, 100%, 50%);
         --button-border: hsl(210, 100%, 75%);
+        --success-color: hsl(130, 75%, 60%);
     }
 
     * {
