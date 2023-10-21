@@ -11,14 +11,14 @@
     <h1>Submit your demo</h1>
     <form method="POST" enctype="multipart/form-data">
         <input type="file" name="file">
-        <input type="text" name="artwork_name" placeholder="Artwork Name">
-        <input type="text" name="author" placeholder="Author">
-        <input type="text" name="description" placeholder="Description">
+        <input type="text" name="artwork_name" placeholder="Artwork Name" value="{{ form_initial.title }}">
+        <input type="text" name="author" placeholder="Author" value="{{ form_initial.author }}">
+        <input type="text" name="description" placeholder="Description" value="{{ form_initial.description }}">
         <select name="platform">
-            <option value="TIC-80">TIC-80</option>
-            <option value="PICO-8">PICO-8</option>
-            <option value="WASM-4">WASM-4</option>
-            <option value="UXN+Varvara">UXN+Varvara</option>
+            <option value="TIC-80" {% if form_initial.platform == 'TIC-80' %}selected{% endif %}>TIC-80</option>
+            <option value="PICO-8"{% if form_initial.platform == 'PICO-8' %}selected{% endif %}>PICO-8</option>
+            <option value="WASM-4"{% if form_initial.platform == 'WASM-4' %}selected{% endif %}>WASM-4</option>
+            <option value="UXN+Varvara"{% if form_initial.platform == 'UXN+Varvara' %}selected{% endif %}>UXN+Varvara</option>
         </select>
         <input type="submit" value="Upload">
     </form>
