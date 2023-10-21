@@ -6,7 +6,11 @@ import json
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './uploads'
 directories = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*'))
-app.config['COUNTER'] = max(int(os.path.basename(d)) for d in directories)
+
+if directories:
+    app.config['COUNTER'] = max(int(os.path.basename(d)) for d in directories)
+else:
+    app.config['COUNTER'] = 0
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
