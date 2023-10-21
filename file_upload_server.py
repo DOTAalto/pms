@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 import os
 import glob
+import json
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './uploads'
@@ -19,11 +20,19 @@ def upload_file():
         artwork_name = request.form.get('artwork_name')
         author = request.form.get('author')
         description = request.form.get('description')
+        platform = request.form.get('platform')
 
         file.save(os.path.join(path, file.filename))
 
-        with open(os.path.join(path, "info.txt"), "w") as info:
-            info.write(f"Artwork Name: {artwork_name}\nAuthor: {author}\nDescription: {description}")
+        info = {
+            "title": artwork_name,
+            "author": author,
+            "description": description,
+            "platform": platform
+        }
+
+        with open(os.path.join(path, "info.json"), "w") as outfile:
+            json.dump(info, outfile)
 
         return render_template('result.html')
     return render_template('upload.html')
