@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 import os
 import glob
 import json
@@ -12,21 +12,33 @@ if directories:
 else:
     app.config['COUNTER'] = 0
 
+
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        app.config['COUNTER'] += 1
-        path = os.path.join(app.config['UPLOAD_FOLDER'], str(app.config['COUNTER']))
-        if not os.path.exists(path):
+        submission_id = request.cookies.get('submission_id')
+        if submission_id:
+            # Delete old file if new is uploaded
+            path = os.path.join(app.config['UPLOAD_FOLDER'], submission_id)
+            file = request.files.get('file')
+            if file:
+                files = glob.glob(f'{path}/*')
+                for f in files:
+                    os.remove(f)
+        else:
+            # New submission
+            app.config['COUNTER'] += 1
+            path = os.path.join(app.config['UPLOAD_FOLDER'], str(app.config['COUNTER']))
             os.makedirs(path)
 
-        file = request.files['file']
+        file = request.files.get('file')
         artwork_name = request.form.get('artwork_name')
         author = request.form.get('author')
         description = request.form.get('description')
         platform = request.form.get('platform')
 
-        file.save(os.path.join(path, file.filename))
+        if file or not submission_id:
+            file.save(os.path.join(path, file.filename))
 
         info = {
             "title": artwork_name,
@@ -38,8 +50,11 @@ def upload_file():
         with open(os.path.join(path, "info.json"), "w") as outfile:
             json.dump(info, outfile, indent=4)
 
-        return render_template('result.html')
+        resp = make_response(render_template('result.html'))
+        resp.set_cookie('submission_id', str(app.config['COUNTER']))
+        return resp
     return render_template('upload.html')
+
 
 if __name__ == '__main__':
     app.run(debug=False)
