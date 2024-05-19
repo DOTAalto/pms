@@ -37,11 +37,12 @@ class Entry(models.Model):
     title = models.CharField(max_length=255)
     sub_file = models.FileField(upload_to="uploads/", blank=True)
     thumbnail = models.FileField(upload_to="uploads/", blank=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    team = models.CharField(max_length=80)
     description = models.TextField()
     compo = models.ForeignKey(Compo, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.title} by {self.author} - {self.compo}"
+        return f"{self.title} by {self.team} - {self.compo}"

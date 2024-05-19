@@ -10,7 +10,7 @@ class EntryForm(ModelForm):
             'title',
             'sub_file',
             'thumbnail',
-            'author',
+            'team',
             'description',
             'compo',
         ]
