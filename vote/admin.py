@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.shortcuts import render, redirect
 from django.urls import path
 from django import forms 
+from django.db import IntegrityError
 
 from party.models import Party
 from vote.models import VoteKey
@@ -27,13 +28,20 @@ class VoteKeyAdmin(admin.ModelAdmin):
             if form.is_valid():
                 keys = form.cleaned_data['keys'].splitlines()
                 party = form.cleaned_data['party']
+                import_failed = 0
                 for key in keys:
-                    VoteKey.objects.create(
-                        party=party,
-                        key=key
-                    )
+                    try:
+                        VoteKey.objects.create(
+                            party=party,
+                            key=key
+                        )
+                    except IntegrityError:
+                        import_failed += 1
 
-                self.message_user(request, "Keys imported successfully!")
+                import_total = len(keys)
+                import_success = import_total - import_failed
+                message = f"Imported {import_success} keys successfully, {import_failed} failed. (Total: {import_total})"
+                self.message_user(request, message)
                 return redirect('..')
 
 
