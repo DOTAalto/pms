@@ -22,5 +22,5 @@ from party import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('<slug:slug>', views.PartyDetailView.as_view(), name="party-detail"),
-    path('<int:compo_pk>/submit/', views.SubmitToCompoView.as_view(), name="submit")
+    path('<int:compo_pk>/submit/', views.CreateEntryView.as_view(), name="submit")
 ]

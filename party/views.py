@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse
 
 from party.models import Compo, Party, Entry 
@@ -13,15 +13,15 @@ class PartyDetailView(DetailView):
     model = Party 
     template_name = 'party/party_detail.html'
 
-"""
-class PartyListView(ListView):
-    template_name = 'party/party_list.html'
-
-"""
-
-class SubmitToCompoView(CreateView, LoginRequiredMixin):
+class UpdateEntryView(UpdateView):
     model = Entry
-    template_name = 'party/submission_create.html'
+    template_name = "party/entry_create.html"
+    form_class = EntryForm
+
+
+class CreateEntryView(CreateView, LoginRequiredMixin):
+    model = Entry
+    template_name = 'party/entry_create.html'
     form_class = EntryForm
 
     def get_initial(self):
