@@ -27,6 +27,7 @@ def export_entries(modeladmin, request, queryset):
 
 class EntryAdmin(admin.ModelAdmin):
     actions = [export_entries]
+    list_filter = ['compo__title']
 
 
 admin.site.register(Party)
