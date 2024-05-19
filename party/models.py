@@ -7,12 +7,7 @@ from django.utils import timezone
 class Party(models.Model):
     title = models.CharField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
-    submission_deadline = models.DateTimeField()
     slug = models.SlugField(blank=True)
-
-    @property
-    def open_for_submissions(self):
-        return timezone.now() <= self.submission_deadline
 
     def __str__(self):
         return self.title
@@ -25,9 +20,19 @@ class Party(models.Model):
 class Compo(models.Model):
     title = models.CharField(max_length=255)
     party = models.ForeignKey(Party, on_delete=models.CASCADE)
+    submission_deadline = models.DateTimeField()
+    metadata_deadline = models.DateTimeField()
 
     class Meta:
         unique_together = ['title', 'party']
+
+    @property
+    def open_for_submissions(self):
+        return timezone.now() <= self.submission_deadline
+    
+    @property
+    def can_edit_metadata(self):
+        return timezome.now() <= self.metadata_deadline
 
     def __str__(self):
         return f"{self.party} - {self.title}"
