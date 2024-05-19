@@ -1,0 +1,50 @@
+:root {
+--link: hsl(215, 100%, 45%);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --link: hsl(215, 100%, 65%);
+    }
+}
+
+* {
+    font-family: system-ui, sans-serif;
+    color-scheme: light dark;
+}
+
+html {
+    /* Prevent font scaling in landscape while allowing user zoom */
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+.container {
+    width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right));
+    height: calc(100vh - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+
+    /* Don't overflow the window with over-sized texts. Subtract paddings */
+    margin-left: env(safe-area-inset-left);
+    margin-right: env(safe-area-inset-right);
+    margin-bottom: env(safe-area-inset-bottom);
+    margin-top: env(safe-area-inset-top);
+}
+
+
+input {
+    /* Prevent iOS zoom on focus */
+    font-size: 16px;
+}
+
+a,
+a:visited {
+    text-decoration: none;
+    color: var(--link);
+}
+
+a:hover {
+    text-decoration: underline;
+}
