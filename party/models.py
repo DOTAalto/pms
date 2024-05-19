@@ -37,7 +37,7 @@ class Entry(models.Model):
     title = models.CharField(max_length=255)
     sub_file = models.FileField(upload_to="uploads/", blank=True)
     thumbnail = models.FileField(upload_to="uploads/", blank=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     team = models.CharField(max_length=80)
     description = models.TextField()
     compo = models.ForeignKey(Compo, on_delete=models.CASCADE)

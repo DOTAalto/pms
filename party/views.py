@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic.detail import DetailView
@@ -18,7 +19,7 @@ class PartyListView(ListView):
 
 """
 
-class SubmitToCompoView(CreateView):
+class SubmitToCompoView(CreateView, LoginRequiredMixin):
     model = Entry
     template_name = 'party/submission_create.html'
     form_class = EntryForm
@@ -29,8 +30,9 @@ class SubmitToCompoView(CreateView):
         return initial
 
     def form_valid(self, form):
-        submission = form.save(commit=False)
+        entry = form.save(commit=False)
+        entry.owner = self.request.user 
 
-        submission.save()
+        entry.save()
         return HttpResponseRedirect(reverse('party-detail', kwargs={'slug': submission.compo.party.slug }))
     
