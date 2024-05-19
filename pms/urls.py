@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from party import views
@@ -22,5 +23,8 @@ from party import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('<slug:slug>', views.PartyDetailView.as_view(), name="party-detail"),
-    path('<int:compo_pk>/submit/', views.CreateEntryView.as_view(), name="submit")
+    path('<int:compo_pk>/submit/', views.CreateEntryView.as_view(), name="submit-entry"),
+    path('entry/<int:pk>', views.UpdateEntryView.as_view(), name="update-entry"),
+
+    path("accounts/login/", auth_views.LoginView.as_view()),
 ]

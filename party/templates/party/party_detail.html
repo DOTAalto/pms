@@ -8,7 +8,7 @@
         {% for compo in party.compo_set.all %}
             {{ compo.title }}
             {% if compo.open_for_submissions %}
-                <a href="{% url 'submit' compo_pk=compo.pk %}">Submit to compo</a>
+                <a href="{% url 'submit-entry' compo_pk=compo.pk %}">Submit to compo</a>
             {% endif %}
         {% endfor %}
     </div>

@@ -5,6 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse
 
+from party.mixins import OwnerRequiredMixin
 from party.models import Compo, Party, Entry 
 from party.forms import EntryForm
 
@@ -13,13 +14,19 @@ class PartyDetailView(DetailView):
     model = Party 
     template_name = 'party/party_detail.html'
 
-class UpdateEntryView(UpdateView):
+class UpdateEntryView(OwnerRequiredMixin, UpdateView):
     model = Entry
     template_name = "party/entry_create.html"
-    form_class = EntryForm
+    fields = [
+        'title',
+        'sub_file',
+        'thumbnail',
+        'team',
+        'description',
+    ]
 
 
-class CreateEntryView(CreateView, LoginRequiredMixin):
+class CreateEntryView(LoginRequiredMixin, CreateView):
     model = Entry
     template_name = 'party/entry_create.html'
     form_class = EntryForm
@@ -34,5 +41,5 @@ class CreateEntryView(CreateView, LoginRequiredMixin):
         entry.owner = self.request.user 
 
         entry.save()
-        return HttpResponseRedirect(reverse('party-detail', kwargs={'slug': submission.compo.party.slug }))
+        return HttpResponseRedirect(reverse('party-detail', kwargs={'slug': entry.compo.party.slug }))
     
