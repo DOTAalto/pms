@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, include
 
 from party import views
 
@@ -27,4 +27,5 @@ urlpatterns = [
     path('entry/<int:pk>', views.UpdateEntryView.as_view(), name="update-entry"),
 
     path("accounts/login/", auth_views.LoginView.as_view()),
+    path("vote/", include("vote.urls")),
 ]
