@@ -20,11 +20,19 @@ class Party(models.Model):
         super().save(*args, **kwargs)
 
 
+class CompoVotingStatus(models.TextChoices):
+    UPCOMING = 'U', 'Upcoming'
+    LIVE = 'L', 'Live'
+    OPEN = 'O', 'Voting open'
+    CLOSED = 'C', 'Voting closed'
+
+
 class Compo(models.Model):
     title = models.CharField(max_length=255)
     party = models.ForeignKey(Party, on_delete=models.CASCADE)
     submission_deadline = models.DateTimeField()
     metadata_deadline = models.DateTimeField()
+    voting_status = models.CharField(max_length=1, choices=CompoVotingStatus, default=CompoVotingStatus.UPCOMING)
 
     class Meta:
         unique_together = ['title', 'party']
