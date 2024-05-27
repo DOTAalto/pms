@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator
 from django.db import models
 
 from party.models import Party, Entry
@@ -17,7 +18,7 @@ class VoteKey(models.Model):
 class Vote(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     votekey = models.ForeignKey(VoteKey, on_delete=models.SET_NULL, null=True)
-    points = models.PositiveIntegerField(default=0)
+    points = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(5)])
 
     class Meta:
         unique_together = ['entry', 'votekey']
