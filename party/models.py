@@ -54,6 +54,10 @@ class Compo(models.Model):
     def can_edit_metadata(self):
         return timezome.now() <= self.metadata_deadline
 
+    @property
+    def current_pos_entry(self):
+        return 2
+
     def __str__(self):
         return f"{self.party} - {self.title}"
 

@@ -1,0 +1,35 @@
+
+{% for entry in entries %}
+    <div class="vote">
+        <p>{{ entry.title }} by {{ entry.team }}</p>
+        <form hx-post="{% url 'vote-entry' entry.pk %}" hx-trigger="change">
+            <fieldset>
+                <legend>Points</legend>
+                <div>
+                    <input type="radio" id="0" name="points" value="0" checked />
+                    <label for="0">0</label>
+                </div>
+                <div>
+                    <input type="radio" id="1" name="points" value="1" />
+                    <label for="1">1</label>
+                </div>
+                <div>
+                    <input type="radio" id="2" name="points" value="2" />
+                    <label for="2">2</label>
+                </div>
+                <div>
+                    <input type="radio" id="3" name="points" value="3" />
+                    <label for="3">3</label>
+                </div>
+                <div>
+                    <input type="radio" id="4" name="points" value="4" />
+                    <label for="4">4</label>
+                </div>
+                <div>
+                    <input type="radio" id="5" name="points" value="5" />
+                    <label for="5">5</label>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endfor %}

@@ -6,7 +6,7 @@ from vote.utils import votekey_valid
 from vote.mixins import VoteKeyRequiredMixin
 
 from django.core.exceptions import ValidationError
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView
@@ -49,18 +49,37 @@ class VoteListView(VoteKeyRequiredMixin, ListView):
 class VoteManagementView(StaffRequiredMixin, TemplateView):
     template_name = "vote/management.html"
 
+def get_votekey(request):
+    found = False
+    votekey = request.COOKIES.get('votekey')
+    if not votekey_valid(votekey):
+        return None, found
+    found = True
+    votekey = VoteKey.objects.get(key=votekey)
+    return votekey, found
+
+@csrf_exempt
+def entries_to_vote_for(request, compo_pk):
+    votekey, found = get_votekey(request)
+    if not found:
+        raise ValidationError
+    compo = get_object_or_404(Compo, pk=compo_pk)
+    entries = compo.entries.all()[:compo.current_pos_entry]
+    return render(request, "vote/entries_formset.html", context={'entries': entries})
+
 
 @csrf_exempt
 def cast_vote_for_entry(request, entry_pk):
-    votekey = request.COOKIES.get('votekey')
-    if not votekey_valid(votekey):
+    votekey, found = get_votekey(request)
+    if not found:
         raise ValidationError
-    votekey = VoteKey.objects.get(key=votekey)
     body = request.POST.dict()
     points = body['points']
-    Vote.objects.create(
-        entry=Entry.objects.get(pk=entry_pk),
+    Vote.objects.update_or_create(
+        entry=entry,
         votekey=votekey,
-        points=points
+        defaults={
+            'points': points
+        }
     )
     return HttpResponse()
