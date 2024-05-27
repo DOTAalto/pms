@@ -65,7 +65,7 @@ class Entry(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     team = models.CharField(max_length=32)
     description = models.TextField()
-    compo = models.ForeignKey(Compo, on_delete=models.CASCADE)
+    compo = models.ForeignKey(Compo, on_delete=models.CASCADE, related_name='entries')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     order = models.PositiveIntegerField(default=0)
