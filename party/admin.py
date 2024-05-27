@@ -2,6 +2,7 @@ import tempfile
 import zipfile
 import os
 from io import BytesIO
+from adminsortable2.admin import SortableStackedInline, SortableAdminBase
 
 from django.contrib import admin
 from django.http import HttpResponse
@@ -25,11 +26,26 @@ def export_entries(modeladmin, request, queryset):
     return response
 
 
-class EntryAdmin(admin.ModelAdmin):
+class EntryAdmin(SortableStackedInline):
+    model = Entry
     actions = [export_entries]
     list_filter = ['compo__title']
+    exclude = [
+        'sub_file',
+        'title',
+        'thumbnail',
+        'owner',
+        'team',
+        'description'
+    ]
+    can_delete = False
+    extra = 0
+
+
+@admin.register(Compo)
+class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
+    inlines = [EntryAdmin]
 
 
 admin.site.register(Party)
-admin.site.register(Compo)
-admin.site.register(Entry, EntryAdmin)
+admin.site.register(Entry)

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'party',
     'vote',
+    'adminsortable2',
 ]
 
 MIDDLEWARE = [

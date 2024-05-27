@@ -48,6 +48,10 @@ class Entry(models.Model):
     compo = models.ForeignKey(Compo, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order"]
 
     def __str__(self):
         return f"{self.title} by {self.team} - {self.compo}"
