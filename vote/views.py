@@ -1,3 +1,4 @@
+from party.mixins import StaffRequiredMixin
 from vote.forms import VoteLoginForm
 from vote.models import VoteKey
 from vote.utils import votekey_valid
@@ -29,8 +30,10 @@ class LoginVoteView(FormView):
             
             return TemplateResponse(self.request, self.template_name, context)
 
-            
-
 
 class VoteView(VoteKeyRequiredMixin, TemplateView):
     template_name = "vote/vote.html"
+
+
+class VoteManagementView(StaffRequiredMixin, TemplateView):
+    template_name = "vote/management.html"

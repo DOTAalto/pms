@@ -1,5 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
+from django.contrib.auth.mixins import AccessMixin
+from django.core.exceptions import PermissionDenied, Una
 
 
 class OwnerRequiredMixin:
@@ -10,8 +10,17 @@ class OwnerRequiredMixin:
     """
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        print(obj.owner)
-        print(request.user)
         if obj.owner != request.user or not request.user.is_superuser:
             raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
+
+
+class StaffRequiredMixin(AccessMixin):
+    def dispatch(self, request, *args, **kwargs):
+        u = request.user
+        if not u.is_authenticated:
+            return self.handle_no_permission()
+        if not u.is_staff:
+            return self.handle_no_permission()
+        
         return super().dispatch(request, *args, **kwargs)
