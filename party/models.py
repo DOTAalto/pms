@@ -9,6 +9,9 @@ class Party(models.Model):
     is_active = models.BooleanField(default=True)
     slug = models.SlugField(blank=True)
 
+    class Meta:
+        verbose_name_plural = 'parties'
+
     def __str__(self):
         return self.title
 
@@ -51,6 +54,7 @@ class Entry(models.Model):
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
+        verbose_name_plural = 'entries'
         ordering = ["order"]
 
     def __str__(self):
