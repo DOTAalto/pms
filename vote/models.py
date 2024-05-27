@@ -1,6 +1,6 @@
 from django.db import models
 
-from party.models import Party
+from party.models import Party, Entry
 
 
 class VoteKey(models.Model):
@@ -12,3 +12,12 @@ class VoteKey(models.Model):
 
     def __str__(self):
         return self.key
+
+
+class Vote(models.Model):
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    votekey = models.ForeignKey(VoteKey, on_delete=models.SET_NULL, null=True)
+    points = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ['entry', 'votekey']
