@@ -28,4 +28,5 @@ urlpatterns = [
 
     path("accounts/login/", auth_views.LoginView.as_view()),
     path("vote/", include("vote.urls")),
+    path("beamer/", include("beamer.urls")),
 ]
