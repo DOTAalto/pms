@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from django.utils import timezone
 
@@ -17,7 +18,15 @@ class Party(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
+        self.clean()
         super().save(*args, **kwargs)
+    
+    def clean(self):
+        if self.is_active:
+            # There can only be one Party active at once
+            other_active = Party.objects.filter(is_active=True).exclude(pk=self.pk)
+            if other_active.exists():
+                raise ValidationError('Only one party can be set active at the same time')
 
 
 class CompoVotingStatus(models.TextChoices):

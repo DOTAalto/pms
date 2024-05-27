@@ -47,5 +47,8 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [EntryAdmin]
 
 
-admin.site.register(Party)
+@admin.register(Party)
+class PartyAdmin(admin.ModelAdmin):
+    list_display = ['title', 'is_active']
+
 admin.site.register(Entry)
