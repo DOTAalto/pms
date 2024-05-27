@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import AccessMixin
-from django.core.exceptions import PermissionDenied, Una
+from django.core.exceptions import PermissionDenied
 
 
 class OwnerRequiredMixin:
