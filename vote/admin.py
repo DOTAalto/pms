@@ -5,7 +5,7 @@ from django import forms
 from django.db import IntegrityError
 
 from party.models import Party
-from vote.models import VoteKey
+from vote.models import VoteKey, Vote
 
 class VoteKeyForm(forms.Form):
     party = forms.ModelChoiceField(required=True, queryset=Party.objects.all())
@@ -53,3 +53,4 @@ class VoteKeyAdmin(admin.ModelAdmin):
 
 
 admin.site.register(VoteKey, VoteKeyAdmin)
+admin.site.register(Vote)
