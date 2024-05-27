@@ -29,7 +29,6 @@ def export_entries(modeladmin, request, queryset):
 class EntryAdmin(SortableStackedInline):
     model = Entry
     actions = [export_entries]
-    list_filter = ['compo__title']
     exclude = [
         'sub_file',
         'title',
@@ -44,7 +43,9 @@ class EntryAdmin(SortableStackedInline):
 
 @admin.register(Compo)
 class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
+    list_display = ['__str__', 'voting_status']
     inlines = [EntryAdmin]
+    list_filter = ['party__title']
 
 
 @admin.register(Party)
