@@ -35,7 +35,11 @@ class EntryAdmin(SortableStackedInline):
         'thumbnail',
         'owner',
         'team',
-        'description'
+        'description',
+        'technology',
+        'instructions',
+        'contact_phone',
+        'contact_telegram',
     ]
     can_delete = False
     extra = 0
