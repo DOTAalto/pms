@@ -19,7 +19,12 @@
             {% include 'forms/field.html' with field=form.contact_phone %}
             {% include 'forms/field.html' with field=form.contact_telegram %}
         </fieldset>
-
+         
+        {# In update view, show preview button #}
+        {% if form.instance.pk %}
+            <a href="{% url 'preview-entry' form.instance.pk %}">Preview entry</a>
+        {% endif %}
+ 
         <input type="submit" value="Submit">
     </form>
 {% endblock content %}
