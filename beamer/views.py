@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
 
-from party.models import Compo
-from party.mixins import StaffRequiredMixin
+from party.models import Compo, Entry
+from party.mixins import StaffRequiredMixin, OwnerRequiredMixin
 
 class ControlBeamerView(StaffRequiredMixin, DetailView):
     model = Compo
     template_name = 'beamer/control.html'
+
+class PreviewEntry(OwnerRequiredMixin, DetailView):
+    model = Entry
+    template_name = 'beamer/slideshow.html'

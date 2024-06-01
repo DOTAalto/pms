@@ -4,5 +4,6 @@ from beamer import views
 
 
 urlpatterns = [
-    path('management/', views.ControlBeamerView.as_view(), name='control-beamer'),
+    path('management/<int:pk>', views.ControlBeamerView.as_view(), name='control-beamer'),
+    path('preview/<int:pk>', views.PreviewEntry.as_view(), name='preview-entry'),
 ]

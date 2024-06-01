@@ -10,9 +10,9 @@ class OwnerRequiredMixin:
     """
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if obj.owner != request.user or not request.user.is_superuser:
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
+        if obj.owner == request.user or request.user.is_superuser:
+            return super().dispatch(request, *args, **kwargs)
+        raise PermissionDenied
 
 
 class StaffRequiredMixin(AccessMixin):
