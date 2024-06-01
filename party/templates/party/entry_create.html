@@ -3,7 +3,23 @@
 {% block content %}
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.non_field_errors }}
+        <fieldset>
+            <legend>Public information</legend>
+            {% include 'forms/field.html' with field=form.compo %}
+            {% include 'forms/field.html' with field=form.sub_file %}
+            {% include 'forms/field.html' with field=form.title %}
+            {% include 'forms/field.html' with field=form.team %}
+            {% include 'forms/field.html' with field=form.technology %}
+            {% include 'forms/field.html' with field=form.thumbnail%}
+        </fieldset>
+        <fieldset>
+            <legend>Visible to event organizers only</legend>
+            {% include 'forms/field.html' with field=form.instructions %}
+            {% include 'forms/field.html' with field=form.contact_phone %}
+            {% include 'forms/field.html' with field=form.contact_telegram %}
+        </fieldset>
+
         <input type="submit" value="Submit">
     </form>
 {% endblock content %}

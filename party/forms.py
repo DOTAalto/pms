@@ -12,3 +12,7 @@ class EntryForm(ModelForm):
             'order',
             'owner',
         ]
+        labels = {
+            'team': 'Author',
+            'sub_file': 'File'
+        }
