@@ -6,14 +6,9 @@ from party.models import Entry
 class EntryForm(ModelForm):
     class Meta:
         model = Entry
-        fields = [
-            'title',
-            'sub_file',
-            'thumbnail',
-            'team',
-            'description',
-            'compo',
+        exclude = [
+            'created_at',
+            'updated_at',
+            'order',
+            'owner',
         ]
-        widgets = {
-            'compo': HiddenInput
-        }

@@ -72,6 +72,9 @@ class Entry(models.Model):
     compo = models.ForeignKey(Compo, on_delete=models.CASCADE, related_name='entries')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    instructions = models.TextField(blank=True, null=True)
+    contact_phone = models.CharField(max_length=16, null=True, blank=True)
+    contact_telegram = models.CharField(max_length=32, null=True, blank=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
