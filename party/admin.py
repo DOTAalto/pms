@@ -60,3 +60,11 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
 @admin.register(Party)
 class PartyAdmin(admin.ModelAdmin):
     list_display = ['title', 'is_active']
+    
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+
+        # Remove save and add another and save and continue editing buttons from the UI
+        extra_context['show_save_and_continue'] = False
+        extra_context['show_save_and_add_another'] = False
+        return super().changeform_view(request, object_id, form_url, extra_context)
