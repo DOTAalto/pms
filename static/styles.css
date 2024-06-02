@@ -39,8 +39,10 @@ body {
 
 .container {
     max-width: calc(100vw - 2em - env(safe-area-inset-left) - env(safe-area-inset-right));
-    max-height: calc(100vh - 2em - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+    /* TODO: not sure how theme color and bottom-notch behaves on mobile */
+    /* max-height: calc(100vh - 2em - env(safe-area-inset-bottom) - env(safe-area-inset-top)); */
     width: 50em;
+    padding-bottom: 1em;
 
     /* Don't overflow the window with over-sized texts. Subtract paddings */
     margin-left: env(safe-area-inset-left);
