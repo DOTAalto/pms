@@ -41,7 +41,7 @@ class InlineEntryAdmin(SortableStackedInline):
         'contact_telegram',
     ]
     can_delete = False
-    extra = 0
+    max_num = 0
 
 @admin.register(Entry)
 class EntryAdmin(admin.ModelAdmin):
@@ -63,11 +63,19 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [InlineEntryAdmin]
     list_filter = ['party__title']
 
+    def get_readonly_fields(self, request, obj=None):
+        # set voting_status and current_entry_pos to readonly when creating a new compo
+        if not obj:
+            return ['voting_status', 'current_entry_pos']
+        else:
+            return []
+
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
         # remove extra buttons next to party selection
         field = form.base_fields['party']
         remove_extras(field)
+
         return form
 
 
