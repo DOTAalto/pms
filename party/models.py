@@ -20,7 +20,7 @@ class Party(models.Model):
         self.slug = slugify(self.title)
         self.clean()
         super().save(*args, **kwargs)
-    
+
     def clean(self):
         if self.is_active:
             # There can only be one Party active at once
@@ -50,10 +50,10 @@ class Compo(models.Model):
     @property
     def open_for_submissions(self):
         return timezone.now() <= self.submission_deadline
-    
+
     @property
     def can_edit_metadata(self):
-        return timezome.now() <= self.metadata_deadline
+        return timezone.now() <= self.metadata_deadline
 
     def __str__(self):
         return f"{self.party} - {self.title}"
