@@ -47,6 +47,16 @@ class Compo(models.Model):
     class Meta:
         unique_together = ['title', 'party']
 
+    def submission_deadline_simple(self):
+        # Sunday 22:30
+        return timezone.localtime(self.submission_deadline).strftime('%A %H:%M')
+    submission_deadline_simple.short_description = 'Submission Deadline'
+
+    def metadata_deadline_simple(self):
+        # Sunday 22:30
+        return timezone.localtime(self.metadata_deadline).strftime('%A %H:%M')
+    metadata_deadline_simple.short_description = 'Metadata Deadline'
+
     @property
     def open_for_submissions(self):
         return timezone.now() <= self.submission_deadline
