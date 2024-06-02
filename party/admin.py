@@ -48,6 +48,13 @@ class EntryAdmin(admin.ModelAdmin):
     model = Entry
     actions = [export_entries]
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        # remove extra buttons from compo and owner
+        remove_extras(form.base_fields['compo'])
+        remove_extras(form.base_fields['owner'])
+        return form
+
 
 
 @admin.register(Compo)
@@ -55,6 +62,13 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
     list_display = ['__str__', 'voting_status']
     inlines = [InlineEntryAdmin]
     list_filter = ['party__title']
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        # remove extra buttons next to party selection
+        field = form.base_fields['party']
+        remove_extras(field)
+        return form
 
 
 @admin.register(Party)
@@ -68,3 +82,9 @@ class PartyAdmin(admin.ModelAdmin):
         extra_context['show_save_and_continue'] = False
         extra_context['show_save_and_add_another'] = False
         return super().changeform_view(request, object_id, form_url, extra_context)
+
+
+def remove_extras(field):
+    field.widget.can_add_related = False
+    field.widget.can_change_related = False
+    field.widget.can_view_related = False
