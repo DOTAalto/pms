@@ -63,18 +63,23 @@ a:hover {
 /* nav */
 
 nav {
-    padding: 1em;
     background-color: hsl(45, 100%, 60%);
     position: relative;
     width: 100vw;
     left: calc(-50vw + 50%);
-    padding-left: calc(50vw - 50% + 1em);
+    padding-left: calc(50vw - 50%);
     margin-bottom: 1em;
 }
 
 nav a, nav a:visited {
     color: var(--fg);
-    margin-right: 1em;
+    padding: 1em;
+    display: inline-block;
+}
+
+nav a:hover {
+    text-decoration: none;
+    background-color: hsl(45, 100%, 70%);
 }
 
 /* form stuff */
