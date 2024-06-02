@@ -59,7 +59,7 @@ class EntryAdmin(admin.ModelAdmin):
 
 @admin.register(Compo)
 class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
-    list_display = ['__str__', 'voting_status']
+    list_display = ['__str__', 'voting_status', 'submission_deadline', 'metadata_deadline']
     inlines = [InlineEntryAdmin]
     list_filter = ['party__title']
 
