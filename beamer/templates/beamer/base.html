@@ -1,0 +1,18 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="{% static 'beamer.css' %}">
+    <script src="{% static 'shader.js' %}"></script>
+    <title>DOT PMS</title>
+</head>
+<body style="cursor: none;">
+    <header>
+        <canvas width="1280" height="719"></canvas>
+        {% block content %}{% endblock %}
+    </header>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

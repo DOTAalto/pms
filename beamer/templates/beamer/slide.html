@@ -1,0 +1,50 @@
+<div id="{{ entry.order }}" class="slide">
+<div style="
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    width: 100%;
+    height: 76%;
+    color: white;
+    font-family: Unbounded, sans-serif;
+    left:0;
+    top:15vh;
+">
+    <div style="
+    width: 16%;
+    font-size: 10vh;
+    line-height: 100%;
+    text-align: right;
+    margin-right: 10vh;
+    ">#{{ entry.order }}</div>
+    <div style="">
+        <div id="entry_title" style="
+            font-size: 10vh;
+            line-height: 100%;
+        ">{{ entry.title }}</div>
+        <div id="entry_author" style="
+            font-size: 6.67vh;
+            line-height: 100%;
+            margin-top: 5vh;
+        ">by {{ entry.team }}</div>
+        <div id="entry_description" style="
+            font-size: 4.44vh;
+            line-height: 100%;
+            margin-top: 12vh;
+            font-family: Figtree, sans-serif;
+        ">Technology: {{ entry.technology }}</div>
+
+    </div>
+</div>
+
+<div id="compo_name" style="
+    font-size: 4.44vh;
+    line-height: 100%;
+    /* vertically aligned whole text thing */
+    /* BUT optically, not geometrically */
+    bottom: 11vh;
+    position: absolute;
+    color: white;
+    font-family: Unbounded, sans-serif;
+">BEGINNER DEMO</div>
+</div>

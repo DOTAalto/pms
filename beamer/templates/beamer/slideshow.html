@@ -1,62 +1,51 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="{% static 'beamer.css' %}">
-    <script src="{% static 'shader.js' %}"></script>
-    <title>DOT PMS</title>
-</head>
-<body style="cursor: none;">
-    <header>
-        <canvas width="1280" height="719"></canvas>
-<div style="
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    width: 100%;
-    height: 76%;
-    color: white;
-    font-family: Unbounded, sans-serif;
-">
-    <div style="
-    width: 16%;
-    font-size: 10vh;
-    line-height: 100%;
-    text-align: right;
-    margin-right: 10vh;
-">#1</div>
-    <div style="
-">
-        <div id="entry_title" style="
-    font-size: 10vh;
-    line-height: 100%;
-">{{ object.title }}</div>
-        <div id="entry_author" style="
-    font-size: 6.67vh;
-    line-height: 100%;
-    margin-top: 5vh;
-">by {{ object.team }}</div>
-        <div id="entry_description" style="
-    font-size: 4.44vh;
-    line-height: 100%;
-    margin-top: 12vh;
-    font-family: Figtree, sans-serif;
-">Technology: {{ object.technology }}</div>
+{% extends 'beamer/base.html' %}
 
-    </div>
-</div>
+{% block content %}
+    {% include 'beamer/process_slide.html' with compo=compo headline="Coming up:" %}
+    {% include 'beamer/process_slide.html' with compo=compo headline="Now:" %}
 
-<div id="compo_name" style="
-    font-size: 4.44vh;
-    line-height: 100%;
-    /* vertically aligned whole text thing */
-    /* BUT optically, not geometrically */
-    bottom: 11vh;
-    position: absolute;
-    color: white;
-    font-family: Unbounded, sans-serif;
+    {% for entry in compo.entries.all %}
+        {% include 'beamer/slide.html' with entry=entry %}
+    {% endfor %}
+    {% include 'beamer/process_slide.html' with compo=compo headline="End" %}
+{% endblock %} 
 
-">BEGINNER DEMO</div>
+{% block scripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let slides = document.querySelectorAll('.slide');
+            let currentIndex = 0;
 
-</header></body></html>
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    if (i === index) {
+                        slide.classList.add('active')
+                    } else {
+                        slide.classList.remove('active')
+                    }
+                });
+            }
+    
+            // Initialize the first slide
+            showSlide(currentIndex);
+    
+            // Function to move to the next slide
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+            }
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                showSlide(currentIndex);
+            }
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'ArrowRight') {
+                    nextSlide();
+                } else if (event.key === 'ArrowLeft') {
+                    prevSlide();
+                }
+            }); 
+        });
+    </script>
+{% endblock %}
