@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'party',
     'vote',
     'beamer',
+    'accounts',
     'adminsortable2',
 ]
 

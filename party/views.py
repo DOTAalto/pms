@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse
@@ -9,6 +10,9 @@ from party.mixins import OwnerRequiredMixin
 from party.models import Compo, Party, Entry 
 from party.forms import EntryForm
 
+class PartyList(ListView):
+    model = Party
+    template_name = 'party/party_list.html'
 
 class PartyDetailView(DetailView):
     model = Party 
