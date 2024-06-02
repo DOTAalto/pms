@@ -1,4 +1,4 @@
-{% load static %}
+{% load static party_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +10,16 @@
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 </head>
 <body>
+    <nav>
+        <a href="{% url 'party' %}">{% get_active_party_title %}</a> | 
+        <a href="{% url 'vote-list' %}">Vote</a> | 
+        {% if request.user %}
+            <a href="{% url 'entries' %}">My entries</a> | 
+        {% endif %}
+        {% if request.user.is_superuser %}
+            <a href="{% url 'admin:index' %}">Admin</a>
+        {% endif %}
+    </nav>
     <div class="container">
         {% block content %}
         {% endblock %}

@@ -7,7 +7,7 @@ from django.utils import timezone
 
 class Party(models.Model):
     title = models.CharField(max_length=255, unique=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, help_text='Only one party can be active at a time. Users are redirected to active party after login')
     slug = models.SlugField(blank=True)
 
     class Meta:
