@@ -1,0 +1,13 @@
+<div class="vote">
+    <form hx-post="{% url 'vote-entry' entry.pk %}" hx-trigger="change">
+        <fieldset>
+            <legend>{{ entry.title }} by {{ entry.team }}</legend>
+            {% for radio in form.points %}
+                <label for="{{ radio.id_for_label }}">
+                    <span>{{ radio.tag }}</span>
+                    {{ radio.choice_label }}
+                </label>
+            {% endfor%}
+        </fieldset>
+    </form>
+</div>

@@ -2,7 +2,7 @@ import json
 
 from party.mixins import StaffRequiredMixin
 from party.models import Compo, Entry, CompoVotingStatus
-from vote.forms import VoteLoginForm
+from vote.forms import VoteLoginForm, VoteForm
 from vote.models import VoteKey, Vote
 from vote.utils import votekey_valid
 from vote.mixins import VoteKeyRequiredMixin
@@ -67,6 +67,7 @@ def entries_to_vote_for(request, compo_pk):
     if not found:
         raise ValidationError
     compo = get_object_or_404(Compo, pk=compo_pk)
+    compo_voting_status = compo.voting_status
 
     if compo_voting_status == CompoVotingStatus.LIVE:
         entries = compo.entries.all()[:compo.current_entry_pos]
@@ -77,7 +78,16 @@ def entries_to_vote_for(request, compo_pk):
     else:
         entries = compo.entries.none()
 
-    return render(request, "vote/entries_formset.html", context={'entries': entries})
+    entry_list = []
+    for entry in entries:
+        vote = Vote.objects.filter(votekey=votekey, entry=entry).first()
+        if vote:
+            form = VoteForm(instance=vote)
+        else:
+            form = VoteForm()
+        entry_list.append({'entry': entry, 'form': form})
+
+    return render(request, "vote/entries_formset.html", context={'entry_list': entry_list})
 
 
 @csrf_exempt
@@ -88,16 +98,18 @@ def cast_vote_for_entry(request, entry_pk):
     votekey, found = get_votekey(request)
     if not found:
         raise ValidationError
-    data = json.loads(request.body)
-    points = data['points']
-    Vote.objects.update_or_create(
+    body = request.POST.dict()
+    points = body['points']
+    entry = Entry.objects.get(pk=entry_pk)
+    vote, _ = Vote.objects.update_or_create(
         entry=entry,
         votekey=votekey,
         defaults={
             'points': points
         }
     )
-    return render('vote/entry.html')
+    form = VoteForm(instance=vote)
+    return render(request, 'vote/entry.html', context={'form': form, 'entry': entry})
 
 
 def is_superuser(user):

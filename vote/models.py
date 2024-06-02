@@ -15,10 +15,21 @@ class VoteKey(models.Model):
         return self.key
 
 
+
+POINTS = (
+    (0, '0'),
+    (1, '1'),
+    (2, '2'),
+    (3, '3'),
+    (4, '4'),
+    (5, '5'),
+)
+
+
 class Vote(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
-    votekey = models.ForeignKey(VoteKey, on_delete=models.SET_NULL, null=True)
-    points = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(5)])
+    votekey = models.ForeignKey(VoteKey, on_delete=models.SET_NULL, null=True, db_index=True)
+    points = models.PositiveIntegerField(default=0, choices=POINTS)
 
     class Meta:
         unique_together = ['entry', 'votekey']
