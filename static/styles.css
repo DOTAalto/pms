@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree&display=swap');
+
 :root {
     --link: hsl(215, 100%, 45%);
     --border: 1px solid hsla(0, 0%, 0%, 0.3);
@@ -11,7 +14,7 @@
 }
 
 * {
-    font-family: system-ui, sans-serif;
+    font-family: Figtree, system-ui, sans-serif;
     color-scheme: light dark;
 }
 
