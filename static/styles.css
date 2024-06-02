@@ -1,10 +1,12 @@
 :root {
---link: hsl(215, 100%, 45%);
+    --link: hsl(215, 100%, 45%);
+    --border: 1px solid hsla(0, 0%, 0%, 0.3);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --link: hsl(215, 100%, 65%);
+        --border: 1px solid hsla(0, 0%, 100%, 0.3);
     }
 }
 
@@ -51,4 +53,25 @@ a:visited {
 
 a:hover {
     text-decoration: underline;
+}
+
+/* form stuff */
+
+fieldset {
+    border-radius: 0.7em;
+    border: var(--border);
+    margin-bottom: 1em;
+    padding: 0.7em 1.2em;
+}
+
+.form-question {
+    padding: 0.5em 0;
+}
+
+.help {
+    opacity: 0.6;
+    margin-left: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 0;
+    font-size: 0.8em;
 }
