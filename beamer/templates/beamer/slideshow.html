@@ -49,11 +49,11 @@
     
             // Function to move to the next slide
             const nextSlide = () => {
-                currentIndex = (currentIndex + 1) % slides.length;
+                currentIndex = Math.min(currentIndex + 1, slides.length - 1);
                 showSlide(currentIndex);
             }
             const prevSlide = () => {
-                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                currentIndex = Math.max(currentIndex - 1, 0);
                 showSlide(currentIndex);
             }
             document.addEventListener('keydown', (event) => {
