@@ -2,6 +2,9 @@
 {% block content %}
 <h1>All compos</h1>
 {% for compo in object_list %}
-    {{ compo.title }}
+    <div>
+        {{ compo.title }}
+        <a href="{% url 'vote' compo.pk %}">Vote</a>
+    </div>
 {% endfor %}
 {% endblock %}

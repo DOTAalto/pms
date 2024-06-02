@@ -30,10 +30,10 @@ class Party(models.Model):
 
 
 class CompoVotingStatus(models.TextChoices):
-    UPCOMING = 'U', 'Upcoming'
-    LIVE = 'L', 'Live'
-    OPEN = 'O', 'Voting open'
-    CLOSED = 'C', 'Voting closed'
+    UPCOMING = 'U', 'Voting will begin shortly'
+    LIVE = 'L', 'Voting is live!'
+    OPEN = 'O', 'Voting is open!'
+    CLOSED = 'C', 'Voting is closed.'
 
 
 class Compo(models.Model):

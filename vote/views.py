@@ -1,7 +1,7 @@
 import json
 
 from party.mixins import StaffRequiredMixin
-from party.models import Compo, Entry
+from party.models import Compo, Entry, CompoVotingStatus
 from vote.forms import VoteLoginForm
 from vote.models import VoteKey, Vote
 from vote.utils import votekey_valid
@@ -24,7 +24,7 @@ class LoginVoteView(FormView):
     template_name = "vote/login.html"
 
     def get_success_url(self):
-        return reverse('vote') 
+        return reverse('vote-list') 
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -36,7 +36,7 @@ class LoginVoteView(FormView):
             context = self.get_context_data()
             context["error"] = "Invalid key, please go to the info desk to sort this issue out"
             
-            return TemplateResponse(self.request, self.template_name, context)
+            return render(self.request, self.template_name, context=context)
 
 
 class VoteView(VoteKeyRequiredMixin, DetailView):
@@ -67,17 +67,29 @@ def entries_to_vote_for(request, compo_pk):
     if not found:
         raise ValidationError
     compo = get_object_or_404(Compo, pk=compo_pk)
-    entries = compo.entries.all()[:compo.current_entry_pos]
+
+    if compo_voting_status == CompoVotingStatus.LIVE:
+        entries = compo.entries.all()[:compo.current_entry_pos]
+    elif compo_voting_status == CompoVotingStatus.OPEN:
+        entries = compo.entries.all()
+    elif compo_voting_status == CompoVotingStatus.CLOSED:
+        entries = compo.entries.none()
+    else:
+        entries = compo.entries.none()
+
     return render(request, "vote/entries_formset.html", context={'entries': entries})
 
 
 @csrf_exempt
 def cast_vote_for_entry(request, entry_pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
     votekey, found = get_votekey(request)
     if not found:
         raise ValidationError
-    body = request.POST.dict()
-    points = body['points']
+    data = json.loads(request.body)
+    points = data['points']
     Vote.objects.update_or_create(
         entry=entry,
         votekey=votekey,
@@ -85,7 +97,7 @@ def cast_vote_for_entry(request, entry_pk):
             'points': points
         }
     )
-    return HttpResponse()
+    return render('vote/entry.html')
 
 
 def is_superuser(user):
@@ -100,9 +112,6 @@ def record_current_entry(request):
     data = json.loads(request.body)
     current_entry = data.get('current_entry')
     compo_pk = data.get('compo_pk')
-    print("CALLED")
-    print(compo_pk)
-    print(current_entry)
 
     if not compo_pk:
         return HttpResponseBadRequest('compo_pk missing')

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Vote view {{object.title}}</h1>
+<h1>{{ object }}</h1>
+<p>{{ object.get_voting_status_display }}</p>
 
 <div class="votes" hx-get={% url 'available-entries' object.pk %} hx-trigger="every 2s"></div>
 {% endblock %}
