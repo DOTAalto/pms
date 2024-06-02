@@ -59,7 +59,7 @@ class EntryAdmin(admin.ModelAdmin):
 
 @admin.register(Compo)
 class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
-    list_display = ['__str__', 'voting_status', 'submission_deadline', 'metadata_deadline']
+    list_display = ['__str__', 'submission_deadline', 'metadata_deadline', 'voting_status']
     inlines = [InlineEntryAdmin]
     list_filter = ['party__title']
 
@@ -82,7 +82,6 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
 @admin.register(Party)
 class PartyAdmin(admin.ModelAdmin):
     list_display = ['title', 'is_active']
-    
     def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
         extra_context = extra_context or {}
 
