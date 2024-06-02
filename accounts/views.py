@@ -12,7 +12,7 @@ class SignUpView(CreateView):
 
 
 class LoginView(DjangoLoginView):
-    success_url = reverse_lazy('party-list')
+    success_url = reverse_lazy('party')
 
     def get_success_url(self):
         return self.success_url

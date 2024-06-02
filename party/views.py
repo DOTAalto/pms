@@ -18,6 +18,10 @@ class PartyDetailView(DetailView):
     model = Party 
     template_name = 'party/party_detail.html'
 
+    def get_object(self, queryset=None):
+        return self.model.objects.get(is_active=True)
+
+
 class UpdateEntryView(OwnerRequiredMixin, UpdateView):
     model = Entry
     template_name = "party/entry_create.html"
