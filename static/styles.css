@@ -5,6 +5,9 @@
     --link: hsl(215, 100%, 45%);
     --border: 1px solid hsla(0, 0%, 0%, 0.3);
     --fg: hsl(0, 0%, 0%);
+    --nav-bg: hsl(45, 100%, 60%);
+    --nav-bg-hover: hsl(45, 100%, 75%);
+    --nav-fg: hsl(0, 0%, 0%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -12,6 +15,9 @@
         --link: hsl(215, 100%, 65%);
         --border: 1px solid hsla(0, 0%, 100%, 0.3);
         --fg: hsl(0, 0%, 100%);
+        --nav-bg: hsl(45, 90%, 45%);
+        --nav-bg-hover: hsl(45, 90%, 40%);
+        --nav-fg: hsl(0, 0%, 0%);
     }
 }
 
@@ -63,7 +69,7 @@ a:hover {
 /* nav */
 
 nav {
-    background-color: hsl(45, 100%, 60%);
+    background-color: var(--nav-bg);
     position: relative;
     width: 100vw;
     left: calc(-50vw + 50%);
@@ -72,14 +78,14 @@ nav {
 }
 
 nav a, nav a:visited {
-    color: var(--fg);
+    color: var(--nav-fg);
     padding: 1em;
     display: inline-block;
 }
 
 nav a:hover {
     text-decoration: none;
-    background-color: hsl(45, 100%, 70%);
+    background-color: var(--nav-bg-hover);
 }
 
 /* form stuff */
