@@ -65,7 +65,6 @@ class Entry(models.Model):
     thumbnail = models.FileField(upload_to="uploads/", blank=True, help_text="Recommended 1920x1080 or 1280x720")
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     team = models.CharField(max_length=32, help_text="e.g. demogroup")
-    description = models.TextField()
     technology = models.CharField(max_length=256, null=True, blank=True)
     compo = models.ForeignKey(Compo, on_delete=models.CASCADE, related_name='entries')
     created_at = models.DateTimeField(auto_now_add=True)
