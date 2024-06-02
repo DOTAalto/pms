@@ -4,12 +4,20 @@
 :root {
     --link: hsl(215, 100%, 45%);
     --border: 1px solid hsla(0, 0%, 0%, 0.3);
+    --fg: hsl(0, 0%, 0%);
+    --nav-bg: hsl(45, 100%, 60%);
+    --nav-bg-hover: hsl(47, 100%, 70%);
+    --nav-fg: hsl(0, 0%, 0%);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --link: hsl(215, 100%, 65%);
         --border: 1px solid hsla(0, 0%, 100%, 0.3);
+        --fg: hsl(0, 0%, 100%);
+        --nav-bg: hsl(45, 90%, 45%);
+        --nav-bg-hover: hsl(43, 90%, 39%);
+        --nav-fg: hsl(0, 0%, 0%);
     }
 }
 
@@ -31,9 +39,10 @@ body {
 
 .container {
     max-width: calc(100vw - 2em - env(safe-area-inset-left) - env(safe-area-inset-right));
-    max-height: calc(100vh - 2em - env(safe-area-inset-bottom) - env(safe-area-inset-top));
-    padding: 1em;
+    /* TODO: not sure how theme color and bottom-notch behaves on mobile */
+    /* max-height: calc(100vh - 2em - env(safe-area-inset-bottom) - env(safe-area-inset-top)); */
     width: 50em;
+    padding-bottom: 1em;
 
     /* Don't overflow the window with over-sized texts. Subtract paddings */
     margin-left: env(safe-area-inset-left);
@@ -56,6 +65,28 @@ a:visited {
 
 a:hover {
     text-decoration: underline;
+}
+
+/* nav */
+
+nav {
+    background-color: var(--nav-bg);
+    position: relative;
+    width: 100vw;
+    left: calc(-50vw + 50%);
+    padding-left: calc(50vw - 50%);
+    margin-bottom: 1em;
+}
+
+nav a, nav a:visited {
+    color: var(--nav-fg);
+    padding: 1em;
+    display: inline-block;
+}
+
+nav a:hover {
+    text-decoration: none;
+    background-color: var(--nav-bg-hover);
 }
 
 /* form stuff */
