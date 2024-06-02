@@ -33,6 +33,16 @@ class UpdateEntryView(OwnerRequiredMixin, UpdateView):
         'description',
     ]
 
+class EntryList(LoginRequiredMixin, ListView):
+    model = Entry
+    template_name = 'party/entry_list.html'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(owner=self.request.user)
+        return qs
+    
+
 
 class CreateEntryView(LoginRequiredMixin, CreateView):
     model = Entry

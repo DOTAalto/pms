@@ -26,6 +26,7 @@ urlpatterns = [
     path('<int:compo_pk>/submit/', views.CreateEntryView.as_view(), name="submit-entry"),
     path('entry/<int:pk>', views.UpdateEntryView.as_view(), name="update-entry"),
     path('', views.PartyDetailView.as_view(), name='party'),
+    path('entries/', views.EntryList.as_view(), name='entries'),
 
     path("login/", LoginView.as_view(), name='login'),
     path("vote/", include("vote.urls")),

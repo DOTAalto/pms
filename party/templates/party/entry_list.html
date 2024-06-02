@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>My entries</h2>
+    {% for entry in object_list %}
+    <div>
+        {{ entry }} <a href="{% url 'update-entry' entry.pk %}">Update</a> <a href="{% url 'preview-entry' entry.pk %}">Preview</a>
+    </div>
+    {% endfor %}
+{% endblock %}
