@@ -6,7 +6,7 @@
     --border: 1px solid hsla(0, 0%, 0%, 0.3);
     --fg: hsl(0, 0%, 0%);
     --nav-bg: hsl(45, 100%, 60%);
-    --nav-bg-hover: hsl(45, 100%, 75%);
+    --nav-bg-hover: hsl(47, 100%, 70%);
     --nav-fg: hsl(0, 0%, 0%);
 }
 
@@ -16,7 +16,7 @@
         --border: 1px solid hsla(0, 0%, 100%, 0.3);
         --fg: hsl(0, 0%, 100%);
         --nav-bg: hsl(45, 90%, 45%);
-        --nav-bg-hover: hsl(45, 90%, 40%);
+        --nav-bg-hover: hsl(43, 90%, 39%);
         --nav-fg: hsl(0, 0%, 0%);
     }
 }
@@ -40,7 +40,6 @@ body {
 .container {
     max-width: calc(100vw - 2em - env(safe-area-inset-left) - env(safe-area-inset-right));
     max-height: calc(100vh - 2em - env(safe-area-inset-bottom) - env(safe-area-inset-top));
-    padding: 1em;
     width: 50em;
 
     /* Don't overflow the window with over-sized texts. Subtract paddings */
