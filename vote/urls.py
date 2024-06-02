@@ -9,4 +9,5 @@ urlpatterns = [
     path('available-entries/<int:compo_pk>', views.entries_to_vote_for, name='available-entries'),
     path('', views.VoteListView.as_view(), name='vote-list'),
     path('management/', views.VoteManagementView.as_view(), name='vote-management'),
+    path('record-entry-pos/', views.record_current_entry, name='record-entry-pos'),
 ]

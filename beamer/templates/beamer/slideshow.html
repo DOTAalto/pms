@@ -1,8 +1,8 @@
 {% extends 'beamer/base.html' %}
 
 {% block content %}
-    {% include 'beamer/process_slide.html' with compo=compo headline="Coming up:" %}
-    {% include 'beamer/process_slide.html' with compo=compo headline="Now:" %}
+    {% include 'beamer/process_slide.html' with compo=compo headline="Coming up:" entry_pos=0 %}
+    {% include 'beamer/process_slide.html' with compo=compo headline="Now:" entry_pos=0 %}
 
     {% for entry in compo.entries.all %}
         {% include 'beamer/slide.html' with entry=entry %}
@@ -12,14 +12,31 @@
 
 {% block scripts %}
     <script>
+
+        const postEntryPos = (pos) => {
+            fetch("{% url 'record-entry-pos' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    compo_pk: {{ compo.pk }},
+                    current_entry: pos
+                })
+            })
+
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             let slides = document.querySelectorAll('.slide');
             let currentIndex = 0;
 
 
-            function showSlide(index) {
+            const showSlide = (index) => {
                 slides.forEach((slide, i) => {
                     if (i === index) {
+                        const pos = slide.getAttribute("data-entry-pos");
+                        postEntryPos(pos)
                         slide.classList.add('active')
                     } else {
                         slide.classList.remove('active')
@@ -31,15 +48,15 @@
             showSlide(currentIndex);
     
             // Function to move to the next slide
-            function nextSlide() {
+            const nextSlide = () => {
                 currentIndex = (currentIndex + 1) % slides.length;
                 showSlide(currentIndex);
             }
-            function prevSlide() {
+            const prevSlide = () => {
                 currentIndex = (currentIndex - 1 + slides.length) % slides.length;
                 showSlide(currentIndex);
             }
-            document.addEventListener('keydown', function (event) {
+            document.addEventListener('keydown', (event) => {
                 if (event.key === 'ArrowRight') {
                     nextSlide();
                 } else if (event.key === 'ArrowLeft') {

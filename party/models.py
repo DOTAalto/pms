@@ -42,6 +42,7 @@ class Compo(models.Model):
     submission_deadline = models.DateTimeField()
     metadata_deadline = models.DateTimeField()
     voting_status = models.CharField(max_length=1, choices=CompoVotingStatus, default=CompoVotingStatus.UPCOMING)
+    current_entry_pos = models.PositiveIntegerField(default=0)
 
     class Meta:
         unique_together = ['title', 'party']
@@ -53,10 +54,6 @@ class Compo(models.Model):
     @property
     def can_edit_metadata(self):
         return timezome.now() <= self.metadata_deadline
-
-    @property
-    def current_pos_entry(self):
-        return 2
 
     def __str__(self):
         return f"{self.party} - {self.title}"

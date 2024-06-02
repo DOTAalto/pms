@@ -1,3 +1,5 @@
+import json
+
 from party.mixins import StaffRequiredMixin
 from party.models import Compo, Entry
 from vote.forms import VoteLoginForm
@@ -6,6 +8,7 @@ from vote.utils import votekey_valid
 from vote.mixins import VoteKeyRequiredMixin
 
 from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, reverse, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import FormView
@@ -13,7 +16,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.template.response import TemplateResponse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseNotAllowed
 
 # Create your views here.
 class LoginVoteView(FormView):
@@ -64,7 +67,7 @@ def entries_to_vote_for(request, compo_pk):
     if not found:
         raise ValidationError
     compo = get_object_or_404(Compo, pk=compo_pk)
-    entries = compo.entries.all()[:compo.current_pos_entry]
+    entries = compo.entries.all()[:compo.current_entry_pos]
     return render(request, "vote/entries_formset.html", context={'entries': entries})
 
 
@@ -83,3 +86,30 @@ def cast_vote_for_entry(request, entry_pk):
         }
     )
     return HttpResponse()
+
+
+def is_superuser(user):
+    return user.is_superuser
+
+@csrf_exempt
+@user_passes_test(is_superuser)
+def record_current_entry(request):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    data = json.loads(request.body)
+    current_entry = data.get('current_entry')
+    compo_pk = data.get('compo_pk')
+    print("CALLED")
+    print(compo_pk)
+    print(current_entry)
+
+    if not compo_pk:
+        return HttpResponseBadRequest('compo_pk missing')
+    
+    if current_entry:
+        compo = Compo.objects.get(pk=compo_pk)
+        compo.current_entry_pos = current_entry
+        compo.save()
+
+    return JsonResponse({'success': True})
