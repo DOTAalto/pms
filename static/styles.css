@@ -43,7 +43,7 @@ body {
 }
 
 
-input {
+input, textarea {
     /* Prevent iOS zoom on focus */
     font-size: 16px;
 }
