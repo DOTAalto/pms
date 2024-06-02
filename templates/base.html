@@ -10,17 +10,17 @@
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 </head>
 <body>
-    <nav>
-        <a href="{% url 'party' %}">{% get_active_party_title %}</a> | 
-        <a href="{% url 'vote-list' %}">Vote</a> | 
-        {% if request.user %}
-            <a href="{% url 'entries' %}">My entries</a> | 
-        {% endif %}
-        {% if request.user.is_superuser %}
-            <a href="{% url 'admin:index' %}">Admin</a>
-        {% endif %}
-    </nav>
     <div class="container">
+        <nav>
+            <a href="{% url 'party' %}">{% get_active_party_title %}</a>
+            <a href="{% url 'vote-list' %}">Vote</a>
+            {% if request.user %}
+                <a href="{% url 'entries' %}">My entries</a>
+            {% endif %}
+            {% if request.user.is_superuser %}
+                <a href="{% url 'admin:index' %}">Admin</a>
+            {% endif %}
+        </nav>
         {% block content %}
         {% endblock %}
     </div>
