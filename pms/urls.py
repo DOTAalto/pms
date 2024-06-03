@@ -28,7 +28,7 @@ urlpatterns = [
     path('', views.PartyDetailView.as_view(), name='party'),
     path('entries/', views.EntryList.as_view(), name='entries'),
 
-    path("login/", LoginView.as_view(), name='login'),
+    path("accounts/login/", LoginView.as_view(), name='login'),
     path("vote/", include("vote.urls")),
     path("beamer/", include("beamer.urls")),
 ]
