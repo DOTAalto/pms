@@ -18,17 +18,18 @@ from django.contrib import admin
 from django.urls import path, include
 
 from party import views
-from accounts.views import SignUpView, LoginView
+from accounts.views import SignUpView, LoginView, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('signup/', SignUpView.as_view(), name='signup'),
     path('<int:compo_pk>/submit/', views.CreateEntryView.as_view(), name="submit-entry"),
     path('entry/<int:pk>', views.UpdateEntryView.as_view(), name="update-entry"),
     path('', views.PartyDetailView.as_view(), name='party'),
     path('entries/', views.EntryList.as_view(), name='entries'),
 
+    path('accounts/signup/', SignUpView.as_view(), name='signup'),
     path("accounts/login/", LoginView.as_view(), name='login'),
+    path('accounts/logout/', logout_view, name='logout'),
     path("vote/", include("vote.urls")),
     path("beamer/", include("beamer.urls")),
 ]
