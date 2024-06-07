@@ -21,8 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 
-DEBUG = os.environ.get("DEBUG", 0)
+DEBUG = int(os.environ.get("DEBUG", 0))
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
 SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 
