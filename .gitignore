@@ -6,3 +6,4 @@ __pycache__/
 uploads/
 .DS_Store
 settings_local.py
+.env
