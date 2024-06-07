@@ -77,8 +77,8 @@ class PlatformChoices(models.TextChoices):
 
 class Entry(models.Model):
     title = models.CharField(max_length=32, help_text="e.g. Färjan")
-    sub_file = models.FileField(upload_to="uploads/", blank=True)
-    thumbnail = models.FileField(upload_to="uploads/", blank=True, help_text="Recommended 1920x1080 or 1280x720")
+    sub_file = models.FileField(upload_to="entries/", blank=True)
+    thumbnail = models.FileField(upload_to="thumbnails/", blank=True, help_text="Recommended 1920x1080 or 1280x720")
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     team = models.CharField(max_length=32, help_text="e.g. demogroup")
     team_member_count = models.PositiveIntegerField(default=1, help_text="How many of you are there in your team?")
