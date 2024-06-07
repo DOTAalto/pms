@@ -16,6 +16,7 @@
     <div class="container">
         <nav>
             <a href="{% url 'party' %}">{% get_active_party_title %}</a>
+            <a href="{% url 'info' %}">Info</a>
             <a href="{% url 'vote-list' %}">Vote</a>
             <a href="{% url 'entries' %}">My entries</a>
             {% if request.user.is_superuser %}

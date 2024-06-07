@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
@@ -37,6 +37,9 @@ class EntryList(LoginRequiredMixin, ListView):
         qs = qs.filter(owner=self.request.user)
         return qs
     
+
+class InfoView(TemplateView):
+    template_name = 'party/info.html'
 
 
 class CreateEntryView(LoginRequiredMixin, CreateView):
