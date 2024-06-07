@@ -1,11 +1,11 @@
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, HiddenInput
+from django import forms
 from django.utils import timezone
 
 from party.models import Entry
 
 
-class EntryForm(ModelForm):
+class EntryForm(forms.ModelForm):
     class Meta:
         model = Entry
         exclude = [
@@ -17,6 +17,10 @@ class EntryForm(ModelForm):
         labels = {
             'team': 'Author',
             'sub_file': 'File'
+        }
+        widgets = {
+            'has_audio': forms.CheckboxInput(),
+            'exits_automatically': forms.CheckboxInput()
         }
 
     def clean(self):

@@ -69,6 +69,12 @@ class Compo(models.Model):
         return f"{self.party} - {self.title}"
 
 
+class PlatformChoices(models.TextChoices):
+    WEB = 'WEB', 'Chromium + web server'
+    LINUX = 'LIN', 'Linux'
+    WINDOWS = 'WIN', 'Windows (Proton)'
+    OTHER = 'OTH', 'Other (specify below)'
+
 class Entry(models.Model):
     title = models.CharField(max_length=32, help_text="e.g. Färjan")
     sub_file = models.FileField(upload_to="uploads/", blank=True)
@@ -80,10 +86,13 @@ class Entry(models.Model):
     compo = models.ForeignKey(Compo, on_delete=models.CASCADE, related_name='entries')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    instructions = models.TextField(blank=True, null=True)
-    contact_phone = models.CharField(max_length=16, null=True, blank=True)
+    instructions = models.TextField(blank=True, null=True, help_text='Should we press some button after opening your demo? Anything you want to clarify about the above? If you are not sure, feel free to ask from the organizers.')
+    contact_phone = models.CharField(max_length=16, null=True, blank=True, help_text='We will contact you if we have issues testing that your demo works or if you win something and don’t show up to the award ceremony.')
     contact_telegram = models.CharField(max_length=32, null=True, blank=True)
     order = models.PositiveIntegerField(default=0)
+    platform = models.CharField(max_length=3, choices=PlatformChoices)
+    has_audio = models.BooleanField(blank=True, null=True, help_text='If we don’t hear anything, is it a problem?')
+    exits_automatically = models.BooleanField(blank=True, null=True, help_text='If not, we will try our best to guess where it ends/loops.')
 
     class Meta:
         verbose_name_plural = 'entries'
