@@ -31,4 +31,5 @@ The root path will give an error initially. Log in to your admin account and cre
 ## Migrations
 ```
 python manage.py makemigrations
+python manage.py migrate
 ```
