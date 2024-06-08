@@ -83,7 +83,7 @@ class Entry(models.Model):
     thumbnail = models.ImageField(upload_to="thumbnails/", blank=True, help_text="Used in voting and YouTube. Will be resized to 1280 × 720.")
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     team = models.CharField(max_length=32, help_text="e.g. demogroup")
-    team_member_count = models.PositiveIntegerField(default=1, help_text="How many of you are there in your team?")
+    team_size = models.PositiveIntegerField(default=1, help_text="How many of you are there in your team?")
     technology = models.CharField(max_length=256, null=True, blank=True)
     compo = models.ForeignKey(Compo, on_delete=models.CASCADE, related_name='entries')
     created_at = models.DateTimeField(auto_now_add=True)
