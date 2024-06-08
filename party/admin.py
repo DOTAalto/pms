@@ -6,8 +6,11 @@ from adminsortable2.admin import SortableStackedInline, SortableAdminBase
 
 from django.contrib import admin
 from django.http import HttpResponse
+from django.shortcuts import reverse, redirect
+from django.urls import path
+from django.utils.html import format_html
 
-from party.models import Entry, Party, Compo
+from party.models import Entry, Party, Compo, CompoVotingStatus
 
 
 @admin.action(description="Export selected entries as zip")
@@ -66,6 +69,32 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
         remove_extras(field)
 
         return form
+    
+    def get_urls(self):
+        urls = super().get_urls()
+        additional_urls = [
+            path('go-to-live/<int:compo_pk>', self.admin_site.admin_view(self.go_to_live), name='compo_go_to_live'),
+        ]
+        return additional_urls + urls
+
+    def go_to_live_button(self, compo):
+        return format_html(
+            '<a class="button" href="{}">Start</a>',
+            reverse('admin:compo_go_to_live', args=[compo.pk])
+        )
+    
+    go_to_live_button.short_description = 'Go to Live'
+
+    def go_to_live(self, request, compo_pk):
+        compo = self.get_object(request, compo_pk)
+        compo.voting_status = CompoVotingStatus.LIVE
+        compo.save()
+        return redirect(reverse('control-beamer', args=[compo.pk]))
+            
+    def get_list_display(self, request):
+        list_display = super().get_list_display(request)
+        list_display.append('go_to_live_button')
+        return list_display
 
 
 @admin.register(Party)
