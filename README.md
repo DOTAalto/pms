@@ -15,6 +15,7 @@ pip install -r requirements.txt
 3. Run migrations and create a superuser for yourself
 ```
 mkdir db
+cp .env.sample .env
 # activate .env variables
 python manage.py migrate
 python manage.py createsuperuser
