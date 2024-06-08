@@ -27,3 +27,8 @@ python manage.py runserver
 
 5. Create a party
 The root path will give an error initially. Log in to your admin account and create a party in http://127.0.0.1:8000/admin/party/party/add/. You will also need to create a compo before some features are visible.
+
+## Migrations
+```
+python manage.py makemigrations
+```
