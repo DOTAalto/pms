@@ -80,7 +80,7 @@ class PlatformChoices(models.TextChoices):
 class Entry(models.Model):
     title = models.CharField(max_length=32, help_text="e.g. Färjan")
     sub_file = models.FileField(upload_to="entries/", blank=True)
-    thumbnail = models.ImageField(upload_to="thumbnails/", blank=True, help_text="Will be used as the thumbnail for the Youtube upload after the event")
+    thumbnail = models.ImageField(upload_to="thumbnails/", blank=True, help_text="Used in voting and YouTube. Will be resized to 1280 × 720.")
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     team = models.CharField(max_length=32, help_text="e.g. demogroup")
     team_member_count = models.PositiveIntegerField(default=1, help_text="How many of you are there in your team?")
@@ -114,7 +114,7 @@ class Entry(models.Model):
                 img.save(self.thumbnail.path)
 
         super().save(*args, **kwargs)
-    
+
     def crop_to_16_by_9(self, img):
         img_width, img_height = img.size
         aspect_ratio = 16 / 9
