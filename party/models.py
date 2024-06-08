@@ -108,26 +108,29 @@ class Entry(models.Model):
 
         if self.thumbnail:
             with Image.open(self.thumbnail.path) as img:
-                size = (1920, 1080)
-                img = self.scale_and_crop(img, size)
+                size = (1280, 720)
+                img = self.crop_to_16_by_9(img)
+                img = img.resize(size)
                 img.save(self.thumbnail.path)
 
         super().save(*args, **kwargs)
+    
+    def crop_to_16_by_9(self, img):
+        img_width, img_height = img.size
+        aspect_ratio = 16 / 9
 
-    def scale_and_crop(self, image, size):
-        width, height = image.size
+        if img_width / img_height > aspect_ratio:
+            # Image is wider than the aspect ratio, crop width
+            new_width = int(img_height * aspect_ratio)
+            new_height = img_height
+        else:
+            # Image is taller than the aspect ratio, crop height
+            new_width = img_width
+            new_height = int(img_width / aspect_ratio)
 
-        scaling_factor = min(size[0] / width, size[1] / height)
+        left = (img_width - new_width) / 2
+        top = (img_height - new_height) / 2
+        right = (img_width + new_width) / 2
+        bottom = (img_height + new_height) / 2
 
-        new_size = (int(width * scaling_factor), int(height * scaling_factor))
-
-        image = image.resize(new_size)
-
-        left = (new_size[0] - size[0]) / 2
-        top = (new_size[1] - size[1]) / 2
-        right = (new_size[0] + size[0]) / 2
-        bottom = (new_size[1] + size[1]) / 2
-
-        image = image.crop((left, top, right, bottom))
-
-        return image
+        return img.crop((left, top, right, bottom))
