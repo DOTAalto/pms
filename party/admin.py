@@ -28,19 +28,7 @@ def export_entries(modeladmin, request, queryset):
 
 class InlineEntryAdmin(SortableStackedInline):
     model = Entry
-    exclude = [
-        'sub_file',
-        'title',
-        'thumbnail',
-        'owner',
-        'team',
-        'description',
-        'technology',
-        'instructions',
-        'contact_phone',
-        'contact_telegram',
-        'team_member_count',
-    ]
+    fields = ['compo']
     can_delete = False
     max_num = 0
 
