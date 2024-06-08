@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from django.utils import timezone
 
+from PIL import Image
+
 
 class Party(models.Model):
     title = models.CharField(max_length=255, unique=True)
@@ -78,7 +80,7 @@ class PlatformChoices(models.TextChoices):
 class Entry(models.Model):
     title = models.CharField(max_length=32, help_text="e.g. Färjan")
     sub_file = models.FileField(upload_to="entries/", blank=True)
-    thumbnail = models.FileField(upload_to="thumbnails/", blank=True, help_text="Recommended 1920x1080 or 1280x720")
+    thumbnail = models.ImageField(upload_to="thumbnails/", blank=True, help_text="Will be used as the thumbnail for the Youtube upload after the event")
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     team = models.CharField(max_length=32, help_text="e.g. demogroup")
     team_member_count = models.PositiveIntegerField(default=1, help_text="How many of you are there in your team?")
@@ -100,3 +102,32 @@ class Entry(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.team} - {self.compo}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.thumbnail:
+            with Image.open(self.thumbnail.path) as img:
+                size = (1920, 1080)
+                img = self.scale_and_crop(img, size)
+                img.save(self.thumbnail.path)
+
+        super().save(*args, **kwargs)
+
+    def scale_and_crop(self, image, size):
+        width, height = image.size
+
+        scaling_factor = min(size[0] / width, size[1] / height)
+
+        new_size = (int(width * scaling_factor), int(height * scaling_factor))
+
+        image = image.resize(new_size)
+
+        left = (new_size[0] - size[0]) / 2
+        top = (new_size[1] - size[1]) / 2
+        right = (new_size[0] + size[0]) / 2
+        bottom = (new_size[1] + size[1]) / 2
+
+        image = image.crop((left, top, right, bottom))
+
+        return image
