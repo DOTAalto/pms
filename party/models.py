@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from django.utils.text import slugify
 from django.utils import timezone
 
@@ -79,7 +80,7 @@ class PlatformChoices(models.TextChoices):
 
 class Entry(models.Model):
     title = models.CharField(max_length=32, help_text="e.g. Färjan")
-    sub_file = models.FileField(upload_to="entries/", blank=True)
+    sub_file = models.FileField(upload_to="entries/", blank=True, validators=[FileExtensionValidator(['zip'])])
     thumbnail = models.ImageField(upload_to="thumbnails/", blank=True, help_text="Will be used as the thumbnail for the Youtube upload after the event")
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     team = models.CharField(max_length=32, help_text="e.g. demogroup")
