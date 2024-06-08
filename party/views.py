@@ -53,7 +53,6 @@ class CreateEntryView(LoginRequiredMixin, CreateView):
         return initial
 
     def form_valid(self, form):
-        print("HERE")
         entry = form.save(commit=False)
         entry.owner = self.request.user 
 
