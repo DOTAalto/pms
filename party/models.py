@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from django.utils import timezone
 
+from PIL import Image
+
 
 class Party(models.Model):
     title = models.CharField(max_length=255, unique=True)
@@ -78,7 +80,7 @@ class PlatformChoices(models.TextChoices):
 class Entry(models.Model):
     title = models.CharField(max_length=32, help_text="e.g. Färjan")
     sub_file = models.FileField(upload_to="entries/", blank=True)
-    thumbnail = models.FileField(upload_to="thumbnails/", blank=True, help_text="Recommended 1920x1080 or 1280x720")
+    thumbnail = models.ImageField(upload_to="thumbnails/", blank=True, help_text="Will be used as the thumbnail for the Youtube upload after the event")
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     team = models.CharField(max_length=32, help_text="e.g. demogroup")
     team_member_count = models.PositiveIntegerField(default=1, help_text="How many of you are there in your team?")
@@ -100,3 +102,35 @@ class Entry(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.team} - {self.compo}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.thumbnail:
+            with Image.open(self.thumbnail.path) as img:
+                size = (1280, 720)
+                img = self.crop_to_16_by_9(img)
+                img = img.resize(size)
+                img.save(self.thumbnail.path)
+
+        super().save(*args, **kwargs)
+    
+    def crop_to_16_by_9(self, img):
+        img_width, img_height = img.size
+        aspect_ratio = 16 / 9
+
+        if img_width / img_height > aspect_ratio:
+            # Image is wider than the aspect ratio, crop width
+            new_width = int(img_height * aspect_ratio)
+            new_height = img_height
+        else:
+            # Image is taller than the aspect ratio, crop height
+            new_width = img_width
+            new_height = int(img_width / aspect_ratio)
+
+        left = (img_width - new_width) / 2
+        top = (img_height - new_height) / 2
+        right = (img_width + new_width) / 2
+        bottom = (img_height + new_height) / 2
+
+        return img.crop((left, top, right, bottom))
