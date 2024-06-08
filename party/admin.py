@@ -38,7 +38,6 @@ class InlineEntryAdmin(SortableStackedInline):
         'technology',
         'instructions',
         'contact_phone',
-        'contact_telegram',
         'team_size',
     ]
     can_delete = False

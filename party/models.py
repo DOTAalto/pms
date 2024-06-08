@@ -90,7 +90,6 @@ class Entry(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     instructions = models.TextField(blank=True, null=True, help_text='Should we press some button after opening your demo? Anything you want to clarify about the above? If you are not sure, feel free to ask from the organizers.')
     contact_phone = models.CharField(max_length=16, null=True, blank=True, help_text='We will contact you if we have issues testing that your demo works or if you win something and don’t show up to the award ceremony.')
-    contact_telegram = models.CharField(max_length=32, null=True, blank=True)
     order = models.PositiveIntegerField(default=0)
     platform = models.CharField(max_length=3, choices=PlatformChoices)
     has_audio = models.BooleanField(blank=True, null=True, help_text='If we don’t hear anything, is it a problem?')
