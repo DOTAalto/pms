@@ -27,7 +27,7 @@ POINTS = (
 
 
 class Vote(models.Model):
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name='votes')
     votekey = models.ForeignKey(VoteKey, on_delete=models.SET_NULL, null=True, db_index=True)
     points = models.PositiveIntegerField(default=0, choices=POINTS)
 

@@ -38,7 +38,7 @@ class InlineEntryAdmin(SortableStackedInline):
 @admin.register(Entry)
 class EntryAdmin(admin.ModelAdmin):
     model = Entry
-    actions = [export_entries]
+    list_display = ['__str__', 'entry_total_points']
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)

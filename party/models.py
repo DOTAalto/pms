@@ -104,6 +104,11 @@ class Entry(models.Model):
     def entry_filename(self):
         return f"{self.order}_{self.title}.zip"
 
+    @property
+    def entry_total_points(self):
+        votes = self.votes.all().aggregate(total=models.Sum('points'))['total'] or 0
+        return votes
+
     def __str__(self):
         return f"{self.title} by {self.team} - {self.compo}"
 
