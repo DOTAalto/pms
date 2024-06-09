@@ -99,19 +99,23 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
         )
     
     def export_entries(self, request, compo_pk):
-        buffer = BytesIO()
         compo = self.get_object(request, compo_pk)
 
+        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+            with zipfile.ZipFile(tmp_file, 'w', zipfile.ZIP_DEFLATED) as export:
+                for entry in compo.entries.all():
+                    if entry.sub_file:
+                        filename = os.path.basename(entry.sub_file.name)
+                        export.write(entry.sub_file.path, filename)
 
-        with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as export:
-            for entry in compo.entries.all():
-                if entry.sub_file:
-                    export.write(entry.sub_file.path, entry.entry_filename)
+            tmp_file_path = tmp_file.name
 
-        buffer.seek(0)
-        response = HttpResponse(buffer.read(), content_type='application/x-zip-compressed')
-        response['Content-Disposition'] = f'attachment; filename={compo.title.lower()}_entries.zip'
-        return response 
+        with open(tmp_file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type='application/x-zip-compressed')
+            response['Content-Disposition'] = 'attachment; filename=entries.zip'
+
+        os.remove(tmp_file_path)
+        return response
     
     export_entries_button.short_description = 'Export entries'
 
