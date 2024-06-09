@@ -57,6 +57,14 @@
                 showSlide(currentIndex);
             }
             document.addEventListener('keydown', (event) => {
+                if (event.key === 'f') {
+                    let header = document.querySelector('header')
+                    if (!document.fullscreenElement) {
+                        header.requestFullscreen()
+                    } else {
+                        document.exitFullscreen()
+                    }
+                }
                 if (event.key === 'ArrowRight') {
                     nextSlide();
                 } else if (event.key === 'ArrowLeft') {
