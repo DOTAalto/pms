@@ -99,6 +99,10 @@ class Entry(models.Model):
     class Meta:
         verbose_name_plural = 'entries'
         ordering = ["order"]
+    
+    @property
+    def entry_filename(self):
+        return f"{self.order}_{self.title}.zip"
 
     def __str__(self):
         return f"{self.title} by {self.team} - {self.compo}"

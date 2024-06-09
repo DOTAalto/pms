@@ -51,7 +51,7 @@ class EntryAdmin(admin.ModelAdmin):
 
 @admin.register(Compo)
 class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
-    list_display = ['__str__', 'submission_deadline_simple', 'metadata_deadline_simple', 'voting_status']
+    list_display = ['__str__', 'submission_deadline_simple', 'metadata_deadline_simple', 'voting_status', 'go_to_live_button', 'export_entries_button']
     inlines = [InlineEntryAdmin]
     list_filter = ['party__title']
 
@@ -74,6 +74,7 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
         urls = super().get_urls()
         additional_urls = [
             path('go-to-live/<int:compo_pk>', self.admin_site.admin_view(self.go_to_live), name='compo_go_to_live'),
+            path('export-entries/<int:compo_pk>', self.admin_site.admin_view(self.export_entries), name='export_entries')
         ]
         return additional_urls + urls
 
@@ -90,11 +91,29 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
         compo.voting_status = CompoVotingStatus.LIVE
         compo.save()
         return redirect(reverse('control-beamer', args=[compo.pk]))
-            
-    def get_list_display(self, request):
-        list_display = super().get_list_display(request)
-        list_display.append('go_to_live_button')
-        return list_display
+
+    def export_entries_button(self, compo):
+        return format_html(
+            '<a class="button" href="{}">Export entries</a>', 
+            reverse('admin:export_entries', args=[compo.pk])
+        )
+    
+    def export_entries(self, request, compo_pk):
+        buffer = BytesIO()
+        compo = self.get_object(request, compo_pk)
+
+
+        with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as export:
+            for entry in compo.entries.all():
+                if entry.sub_file:
+                    export.write(entry.sub_file.path, entry.entry_filename)
+
+        buffer.seek(0)
+        response = HttpResponse(buffer.read(), content_type='application/x-zip-compressed')
+        response['Content-Disposition'] = f'attachment; filename={compo.title.lower()}_entries.zip'
+        return response 
+    
+    export_entries_button.short_description = 'Export entries'
 
 
 @admin.register(Party)
