@@ -115,7 +115,11 @@ class Entry(models.Model):
     
     @property
     def entry_filename(self):
-        return f"{self.order}_{self.title}.zip"
+        return f"{self.order}_{slugify(self.title)}.zip"
+    
+    @property
+    def scene_org_filename(self):
+        return f"{slugify(self.title)}.zip"
 
     @property
     def entry_total_points(self):
