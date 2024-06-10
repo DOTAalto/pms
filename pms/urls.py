@@ -27,6 +27,7 @@ urlpatterns = [
     path('', views.PartyDetailView.as_view(), name='party'),
     path('entries/', views.EntryList.as_view(), name='entries'),
     path('info/', views.InfoView.as_view(), name='info'),
+    path('youtube/<int:pk>', views.YoutubeDescView.as_view(), name='compo-youtube-desc'),
 
     path('accounts/signup/', SignUpView.as_view(), name='signup'),
     path("accounts/login/", LoginView.as_view(), name='login'),

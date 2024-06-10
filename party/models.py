@@ -100,6 +100,19 @@ class Entry(models.Model):
         verbose_name_plural = 'entries'
         ordering = ["order"]
     
+    @staticmethod
+    def calculate_positions():
+        entries = Entry.objects.annotate(total_points=Sum('votes__points')).order_by('-total_points')
+        positions = []
+        current_position = 1
+
+        for index, entry in enumerate(entries):
+            if index > 0 and entry.total_points < entries[index - 1].total_points:
+                current_position = index + 1
+            positions.append((current_position, entry.total_points, entry))
+
+        return positions
+    
     @property
     def entry_filename(self):
         return f"{self.order}_{self.title}.zip"

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+    {% for pos, entry in entries %}
+        {% if entry.thumbnail %}
+        <img src="{{ entry.thumbnail.url }}" >
+        {% endif %}
+        <h2>{{ entry.title }} by {{ entry.team }} – Graffathon 2024 – {{ object.title }} </h2>
+        <p>
+            {{ pos | ordinal }} place in {{ object.title }} with {{ entry.entry_total_points }} points
+        </br>
+            More info about Graffathon: https://graffathon.fi
+        </br>
+        </p>
+
+        <hr>
+    {% endfor %}
+{% endblock %}
