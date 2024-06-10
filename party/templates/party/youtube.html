@@ -4,7 +4,7 @@
 {% block content %}
     {% for pos, entry in entries %}
         {% if entry.thumbnail %}
-        <img src="{{ entry.thumbnail.url }}" >
+        <img src="{{ entry.thumbnail.url }}" style="width: 100%;">
         {% endif %}
         <h2>{{ entry.title }} by {{ entry.team }} – Graffathon 2024 – {{ object.title }} </h2>
         <p>
