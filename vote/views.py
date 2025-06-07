@@ -48,6 +48,10 @@ class VoteListView(VoteKeyRequiredMixin, ListView):
     model = Compo
     template_name = "vote/list.html"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(party__is_active=True)
+    
 
 class VoteManagementView(StaffRequiredMixin, TemplateView):
     template_name = "vote/management.html"
