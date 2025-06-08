@@ -84,7 +84,7 @@ def entries_to_vote_for(request, compo_pk):
         if vote:
             form = VoteForm(prefix=entry.pk, instance=vote)
         else:
-            form = VoteForm(prefix=entry.pk)
+            form = VoteForm(prefix=entry.pk, initial={'entry': entry})
         entry_list.append({'entry': entry, 'form': form})
 
     return render(request, "vote/entries_formset.html", context={'entry_list': entry_list})
@@ -97,7 +97,7 @@ def cast_vote_for_entry(request, entry_pk):
 
     votekey, found = get_votekey(request)
     if not found:
-        raise ValidationError
+        raise ValidationError("No votekey found")
 
     form = VoteForm(request.POST, prefix=entry_pk)
 
@@ -114,7 +114,7 @@ def cast_vote_for_entry(request, entry_pk):
         return render(request, 'vote/entry.html', context={
             'form': VoteForm(instance=vote, prefix=entry_pk), 'entry': entry})
     
-    raise ValidationError
+    raise ValidationError("Invalid data")
 
 
 def is_superuser(user):
