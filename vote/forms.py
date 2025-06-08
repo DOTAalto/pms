@@ -8,7 +8,8 @@ class VoteLoginForm(forms.Form):
 class VoteForm(forms.ModelForm):
     class Meta:
         model = Vote
-        fields = ['points']
+        fields = ['points', 'entry']
         widgets = {
-            'points': forms.RadioSelect
+            'points': forms.RadioSelect,
+            'entry': forms.HiddenInput
         }

@@ -82,9 +82,9 @@ def entries_to_vote_for(request, compo_pk):
     for entry in entries:
         vote = Vote.objects.filter(votekey=votekey, entry=entry).first()
         if vote:
-            form = VoteForm(instance=vote)
+            form = VoteForm(prefix=entry.pk, instance=vote)
         else:
-            form = VoteForm()
+            form = VoteForm(prefix=entry.pk)
         entry_list.append({'entry': entry, 'form': form})
 
     return render(request, "vote/entries_formset.html", context={'entry_list': entry_list})
@@ -98,18 +98,23 @@ def cast_vote_for_entry(request, entry_pk):
     votekey, found = get_votekey(request)
     if not found:
         raise ValidationError
-    body = request.POST.dict()
-    points = body['points']
-    entry = Entry.objects.get(pk=entry_pk)
-    vote, _ = Vote.objects.update_or_create(
-        entry=entry,
-        votekey=votekey,
-        defaults={
-            'points': points
-        }
-    )
-    form = VoteForm(instance=vote)
-    return render(request, 'vote/entry.html', context={'form': form, 'entry': entry})
+
+    form = VoteForm(request.POST, prefix=entry_pk)
+
+    if form.is_valid():
+        entry = form.cleaned_data['entry']
+        points = form.cleaned_data['points']
+
+        vote, _ = Vote.objects.update_or_create(
+            entry=form.cleaned_data['entry'],
+            votekey=votekey,
+            defaults={'points': form.cleaned_data['points']}
+        )
+
+        return render(request, 'vote/entry.html', context={
+            'form': VoteForm(instance=vote, prefix=entry_pk), 'entry': entry})
+    
+    raise ValidationError
 
 
 def is_superuser(user):
