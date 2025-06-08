@@ -1,4 +1,6 @@
 
 {% for obj in entry_list %}
-    {% include 'vote/entry.html' with entry=obj.entry form=obj.form %}
+    <div class="vote">
+        {% include 'vote/entry.html' with entry=obj.entry form=obj.form %}
+    </div>
 {% endfor %}

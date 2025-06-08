@@ -1,11 +1,13 @@
 import tempfile
 import zipfile
+import zipfly
 import os
 from io import BytesIO
+from stat import S_IFREG
 from adminsortable2.admin import SortableStackedInline, SortableAdminBase
 
 from django.contrib import admin
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import reverse, redirect
 from django.urls import path
 from django.utils.html import format_html
@@ -101,20 +103,23 @@ class CompoAdmin(SortableAdminBase, admin.ModelAdmin):
     def export_entries(self, request, compo_pk):
         compo = self.get_object(request, compo_pk)
 
-        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-            with zipfile.ZipFile(tmp_file, 'w', zipfile.ZIP_DEFLATED) as export:
-                for entry in compo.entries.all():
-                    if entry.sub_file:
-                        filename = os.path.basename(entry.sub_file.name)
-                        export.write(entry.sub_file.path, filename)
+        paths = []
 
-            tmp_file_path = tmp_file.name
+        for entry in compo.entries.all():
+            if entry.sub_file:
+                paths.append(
+                    {
+                        'fs': entry.sub_file.path,
+                        'n': f"{entry.order} {os.path.basename(entry.sub_file.name)}"
+                    }
+                )
+        
+        zfly = zipfly.ZipFly(paths=paths)
+        generator = zfly.generator()
 
-        with open(tmp_file_path, 'rb') as f:
-            response = HttpResponse(f.read(), content_type='application/x-zip-compressed')
-            response['Content-Disposition'] = 'attachment; filename=entries.zip'
+        response = StreamingHttpResponse(generator, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename="entries.zip"'
 
-        os.remove(tmp_file_path)
         return response
     
     export_entries_button.short_description = 'Export entries'
