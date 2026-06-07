@@ -90,7 +90,7 @@ class Entry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     instructions = models.TextField(blank=True, null=True, help_text='Should we press some button after opening your demo? Anything you want to clarify about the above? If you are not sure, feel free to ask from the organizers.')
-    contact_phone = models.CharField(max_length=16, null=True, blank=True, help_text='We will contact you if we have issues testing that your demo works or if you win something and don’t show up to the award ceremony.')
+    contact_phone = models.CharField(max_length=16, null=True, blank=True, help_text='We will contact you if we have issues testing that your demo works.')
     order = models.PositiveIntegerField(default=0)
     platform = models.CharField(max_length=3, choices=PlatformChoices)
     has_audio = models.BooleanField(blank=True, null=True, help_text='If we don’t hear anything, is it a problem?')
@@ -99,7 +99,7 @@ class Entry(models.Model):
     class Meta:
         verbose_name_plural = 'entries'
         ordering = ["order"]
-    
+
     @staticmethod
     def calculate_positions():
         entries = Entry.objects.annotate(total_points=Sum('votes__points')).order_by('-total_points')
@@ -112,11 +112,11 @@ class Entry(models.Model):
             positions.append((current_position, entry.total_points, entry))
 
         return positions
-    
+
     @property
     def entry_filename(self):
         return f"{self.order}_{slugify(self.title)}.zip"
-    
+
     @property
     def scene_org_filename(self):
         return f"{slugify(self.title)}.zip"
@@ -140,7 +140,7 @@ class Entry(models.Model):
                 img.save(self.thumbnail.path)
 
         super().save(*args, **kwargs)
-    
+
     def crop_to_16_by_9(self, img):
         img_width, img_height = img.size
         aspect_ratio = 16 / 9
